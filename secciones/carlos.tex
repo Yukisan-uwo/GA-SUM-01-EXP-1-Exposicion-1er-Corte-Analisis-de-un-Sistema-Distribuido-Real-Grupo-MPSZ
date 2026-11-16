@@ -171,28 +171,31 @@
 \end{tikzpicture}
 \fuentes{\cite{shahri2022mqtt,im2023emqtt,innamorati2026mqtt}}
 \note{
-MQTT es un protocolo ligero de mensajería de la capa de aplicación,
-habitualmente sobre TCP/IP. Los clientes pueden publicar, suscribirse
-o desempeñar ambos papeles. El broker recibe las publicaciones y las
-distribuye según las suscripciones. El publicador no necesita conocer
-la dirección ni la cantidad de receptores.
+En este gráfico vemos cómo MQTT comunica a un publicador
+con varios suscriptores. El publicador envía el mensaje al
+broker, asociado a un tópico. El broker identifica las
+suscripciones que coinciden y distribuye el mensaje.
+Así, el publicador no necesita conocer a cada receptor.
+
 \par
-El tópico de esta exposición es sgra/tutorias/creada. Los niveles se
-separan mediante barras. Los filtros admiten + para un nivel y \# para
-los niveles restantes; una suscripción a sgra/tutorias/\# puede recibir
-varios tipos de eventos bajo esa jerarquía. El esquema superior muestra
-la distribución de publicaciones; la suscripción se establece antes.
+En nuestro ejemplo, el tópico es
+\texttt{sgra/tutorias/creada}. Las barras separan los niveles
+de su jerarquía. Un mismo cliente puede publicar mensajes
+y también suscribirse para recibirlos.
+
 \par
-Los diagramas inferiores representan un único intercambio emisor--receptor.
-QoS 0 envía PUBLISH sin confirmación MQTT: entrega como máximo una vez,
-con posibilidad de pérdida. QoS 1 utiliza PUBLISH y PUBACK: entrega al
-menos una vez, con posibles duplicados. QoS 2 utiliza PUBLISH, PUBREC,
-PUBREL y PUBCOMP para entregar exactamente una vez en ese intercambio.
+Los diagramas inferiores muestran los intercambios de cada
+nivel QoS. Con QoS 0 se envía PUBLISH sin confirmación MQTT
+y el mensaje puede perderse. QoS 1 añade PUBACK, pero puede
+producir duplicados. QoS 2 utiliza cuatro paquetes para
+entregar exactamente una vez en ese intercambio.
+
 \par
-Publicador--broker y broker--suscriptor son intercambios distintos.
-El acuse del broker no demuestra que el consumidor haya terminado su
-tarea. QoS 2 no garantiza una única ejecución de la operación de negocio.
-Tampoco los niveles QoS establecen un plazo máximo de entrega.
+Hay que distinguir la comunicación del publicador con el
+broker de la comunicación del broker con el suscriptor.
+Una confirmación del broker no demuestra que el consumidor
+haya completado su tarea. Tampoco QoS establece cuánto
+tardará en llegar el mensaje.
 }
 \end{frame}
 
@@ -229,25 +232,42 @@ Tampoco los niveles QoS establecen un plazo máximo de entrega.
 \end{tikzpicture}
 \fuentes{\cite{mqtt2019,mosquitto_pub,mosquitto_sub}; \href{https://mqttx.app/docs}{MQTTX}}
 \note{
-Esta es la configuración de una demostración local con datos ficticios,
-sin conexión con el SGRA real. Mosquitto es el broker y MQTTX Desktop
-es el cliente gráfico. Las tres conexiones tienen identificadores distintos.
+Para comprobar este funcionamiento utilizamos Mosquitto
+como broker y MQTTX Desktop como cliente gráfico.
+El broker se ejecutó en Docker, en
+\texttt{127.0.0.1:1883}, utilizando MQTT 5.0.
+
 \par
-Primero se conectan sub-notificaciones y sub-auditoria y se suscriben a
-sgra/tutorias/creada solicitando QoS 1. Las flechas discontinuas indican
-esas suscripciones. Después pub-sgra publica un JSON en el mismo tópico,
-con QoS 1 y Retain desactivado. Las flechas continuas representan el
-recorrido esperado de esa publicación.
+Creamos tres conexiones con identificadores distintos.
+\texttt{pub-sgra} representa al publicador;
+\texttt{sub-notificaciones} y \texttt{sub-auditoria}
+representan a los dos receptores.
+
 \par
-El JSON tiene tres campos: eventoId con valor evt-001; tipo con valor
-SolicitudTutoriaCreada; y solicitudId con valor numérico 42.
-El identificador del evento y el de la solicitud cumplen funciones diferentes.
+Primero conectamos los suscriptores y los registramos en
+\texttt{sgra/tutorias/creada} con QoS 1.
+Después publicamos el evento
+\texttt{SolicitudTutoriaCreada}, también con QoS 1
+y con Retain desactivado.
+
 \par
-El resultado esperado es recibir el mismo evento en ambos suscriptores.
-No se afirma que esta ejecución ya se haya realizado: se necesitan
-capturas auténticas después de probarla. La ilustración es un esquema,
-no una captura de MQTTX. Una recepción satisfactoria no demuestra
-recuperación ante fallos. La configuración del ZIP no persiste mensajes en disco.
+El mensaje identifica el evento como \texttt{evt-001}
+y la solicitud como \texttt{42}. Son identificadores
+diferentes: uno corresponde al evento y otro a la
+solicitud de tutoría.
+
+\par
+En la ejecución del 15 de noviembre de 2026, ambos
+suscriptores recibieron el mismo contenido. Las capturas
+de MQTTX muestran esas recepciones y el registro de
+Mosquitto confirma los envíos PUBLISH y los PUBACK
+devueltos por los receptores.
+
+\par
+Esta práctica utiliza datos ficticios y no se conecta
+con el SGRA real. Comprobamos la distribución del evento
+durante esa ejecución; no realizamos pruebas de
+recuperación ante fallos ni medimos la latencia.
 }
 \end{frame}
 
@@ -285,32 +305,42 @@ recuperación ante fallos. La configuración del ZIP no persiste mensajes en dis
 \end{tikzpicture}
 \fuentes{\cite{sgra_frontend,sgra_backend,mqtt2019,shahri2022mqtt}}
 \note{
-La fila superior retoma la arquitectura de referencia documentada por el
-equipo: interfaz Angular, backend Spring Boot y base de datos PostgreSQL.
-La mensajería MQTT de la parte inferior es una propuesta de mejora;
-las conexiones discontinuas indican los componentes y flujos propuestos.
-Mosquitto es una posible implementación del broker, no una dependencia
-que se haya demostrado como instalada en el SGRA.
+La fila superior muestra la arquitectura que el equipo
+documentó para el SGRA: Angular, Spring Boot y PostgreSQL.
+La parte inferior plantea cómo podría incorporarse MQTT.
+Las conexiones discontinuas señalan esa propuesta.
+
 \par
-Después de registrar una solicitud, el backend podría publicar el evento
-SolicitudTutoriaCreada. Notificaciones y auditoría podrían reaccionar
-mediante suscripciones, sin una llamada directa del backend a cada consumidor.
-Se podrían incorporar otros receptores mediante nuevas suscripciones.
+Después de registrar una solicitud de tutoría, el backend
+podría publicar \texttt{SolicitudTutoriaCreada}.
+Un componente recibiría el evento para preparar una
+notificación y otro para registrar la auditoría.
+Ambos reaccionarían mediante suscripciones.
+
 \par
-Como punto de partida se propone evaluar QoS 1 y un identificador único
-del evento. Cada consumidor debe reconocer eventos ya procesados para
-no repetir sus efectos cuando reciba duplicados. QoS 2 tampoco sustituye
-la coordinación necesaria para ejecutar una operación de negocio una sola vez.
+Como punto de partida proponemos evaluar QoS 1 junto
+con un identificador único del evento. Ese identificador
+permitiría que cada consumidor reconozca un evento
+ya procesado y evite repetir sus efectos si recibe
+un duplicado.
+
 \par
-Hay que resolver qué ocurre si el broker deja de estar disponible y qué
-sucede si se confirma la transacción en la base de datos pero falla la
-publicación del evento. MQTT no coordina por sí solo esas dos operaciones.
+También debemos resolver dos situaciones: que el broker
+deje de estar disponible y que la solicitud se guarde
+en la base de datos, pero falle la publicación.
+La elección de QoS no resuelve por sí sola estos problemas.
+
 \par
-TLS representa el cifrado del transporte; ACL, los permisos por tópico.
-La persistencia y las sesiones deben configurarse según los requisitos
-de recuperación. La demo inicial no proporciona una solución completa
-de continuidad de servicio. QoS no establece un plazo máximo de entrega:
-las afirmaciones de latencia y capacidad requieren mediciones en el sistema.
+TLS, ACL y persistencia representan otras decisiones
+necesarias: cifrado del transporte, permisos por tópico
+y conservación de mensajes. Nuestra demostración local
+no implementa todas esas medidas.
+
+\par
+MQTT permitiría incorporar receptores sin añadir una
+llamada directa desde el backend a cada uno. Esa ventaja
+debe valorarse junto con el trabajo necesario para manejar
+duplicados, fallos y consistencia entre componentes.
 }
 \end{frame}
 \endgroup
