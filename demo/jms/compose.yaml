@@ -1,0 +1,22 @@
+name: sgra-nixon-jms
+services:
+  broker:
+    image: apache/artemis:2.57.0-alpine
+    environment:
+      ARTEMIS_USER: practica
+      ARTEMIS_PASSWORD: practica-local
+      ANONYMOUS_LOGIN: "false"
+    ports:
+      - "127.0.0.1:61617:61616"
+      - "127.0.0.1:8162:8161"
+    volumes:
+      - broker-data:/var/lib/artemis-instance
+  cliente:
+    profiles: [herramientas]
+    build: .
+    environment:
+      JMS_URL: tcp://broker:61616
+      JMS_USER: practica
+      JMS_PASSWORD: practica-local
+volumes:
+  broker-data:
