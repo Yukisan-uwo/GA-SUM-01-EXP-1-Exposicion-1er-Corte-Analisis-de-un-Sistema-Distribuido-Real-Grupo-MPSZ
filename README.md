@@ -28,18 +28,8 @@ y usar Biber como procesador bibliográfico.
 - `secciones/carlos.tex`: reservado para MQTT.
 - `secciones/nixon.tex`: reservado para JMS.
 - `secciones/john.tex`: reservado para AMQP.
-- `referencias.bib`: seis artículos de revistas (2022-2024) con DOI contrastado en registros de editoriales o instituciones, más documentación técnica oficial y dos repositorios públicos de código fuente del SGRA. Las páginas sin DOI NO cuentan como artículos de revista.
+- `referencias.bib`
 - `demo/`: un ejercicio local reproducible con Docker/Mosquitto.
-
-## Integridad académica
-
-- Los integrantes deben revisar el contenido, consultar las fuentes, crear sus propias
-  evidencias y dejar commits auténticos. No copiar el material sin entenderlo.
-- Registrar en las **notas finales** el uso de IA, herramientas/versiones, finalidad
-  y forma de verificación, conforme al encuadre de la asignatura.
-- El paquete es un borrador de presentación: aún faltan el análisis completo requerido
-  por la guía, las notas de 2-4 páginas, las evidencias y el ensayo.
-- No se ha probado la ejecución de la demostración Docker en el equipo de los estudiantes.
 
 ## Citas sobre SGRA
 
