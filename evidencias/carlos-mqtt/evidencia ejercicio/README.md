@@ -129,18 +129,22 @@ El registro de Mosquitto mostró:
 
 | Archivo | Evidencia |
 |---|---|
-| `01-configuracion-broker.png` | Versiones de Docker y Compose, estado del contenedor, puerto y configuración de Mosquitto. |
+| `01-docker-mosquitto-configuracion.png` | Versiones de Docker y Compose, estado del contenedor, puerto y configuración de Mosquitto. |
 | `02-configuracion-publicador.png` | Dirección del broker, puerto, identificador del publicador y versión MQTT. |
-| `03-suscripcion-notificaciones.png` | Tópico y QoS solicitados por el cliente de notificaciones. |
-| `04-suscripcion-auditoria.png` | Tópico y QoS solicitados por el cliente de auditoría. |
-| `05-publicacion.png` | Publicación del evento registrada por MQTTX. |
-| `06-recepcion-notificaciones.png` | Recepción del evento en `sub-notificaciones`. |
-| `07-recepcion-auditoria.png` | Recepción del evento en `sub-auditoria`. |
-| `08-registro-broker.png` | Conexiones, suscripciones, publicaciones y confirmaciones observadas por Mosquitto. |
+| `03-suscripcion-qos1-notificaciones.png` | Configuración del tópico y QoS 1 para el suscriptor de notificaciones. |
+| `04-suscripcion-qos1-auditoria.png` | Configuración del tópico y QoS 1 para el suscriptor de auditoría. |
+| `05-evento-listo-para-publicar.png` | Mensaje JSON preparado, tópico, QoS 1 y Retain desactivado antes del envío. |
+| `06-publicacion-qos1.png` | Publicación del evento registrada por MQTTX. |
+| `07-recepcion-notificaciones.png` | Recepción del evento en `sub-notificaciones`. |
+| `07-recepcion-notificaciones-detalle.png` | Vista de detalle de la recepción en `sub-notificaciones`, con tópico, QoS y contenido del mensaje. |
+| `08-recepcion-auditoria.png` | Recepción del evento en `sub-auditoria`. |
+| `08-recepcion-auditoria-detalle.png` | Vista de detalle de la recepción en `sub-auditoria`, con tópico, QoS y contenido del mensaje. |
+| `09-broker-publicacion-entregas-puback.png` | Registro de las conexiones, suscripciones, publicaciones y confirmaciones observadas por Mosquitto. |
+| `10-mqttx-version-instalada.png` | Versión instalada de MQTTX Desktop. |
 
-Las capturas proceden de la ejecución real. Las imágenes de
-recepción muestran una región de la interfaz de MQTTX para
-facilitar la lectura del tópico, QoS y mensaje.
+Las capturas corresponden a la ejecución real de la práctica.
+Las imágenes terminadas en `-detalle.png` muestran una región
+de la interfaz para facilitar la lectura del tópico, QoS y mensaje.
 
 ## Alcance de la comprobación
 
