@@ -128,3 +128,58 @@ También se empleó para adaptar el contenido trabajado con el estudiante a los 
 En la práctica, Codex apoyó la configuración inicial del entorno. La verificación incluyó la compilación del proyecto, la revisión del PDF y la comprobación de los mensajes y registros reales de MQTTX y Mosquitto.
 
 Este apoyo no sustituye la lectura personal de las fuentes ni el dominio del contenido que debe demostrar el estudiante durante la exposición.
+
+/////////////////////////////////////////////
+---
+
+## 15 de noviembre de 2026 — Ejecución de la práctica PUB/SUB con MQTT
+
+**Integrante:** Zambrano Parraga Luis Mario.
+
+**Tema:** Demostración del patrón Publish/Subscribe aplicado a un evento simulado del SGRA.
+
+### Actividades realizadas
+
+- Se realizó una práctica local para demostrar el funcionamiento del patrón de comunicación Publish/Subscribe utilizando Eclipse Mosquitto como broker MQTT.
+- Se utilizó Docker para ejecutar el broker de mensajería en un entorno local.
+- Se configuraron dos clientes suscriptores, representando los módulos de notificaciones y auditoría del SGRA.
+- Se estableció el tópico `sgra/tutorias/creada` como canal de comunicación para los eventos simulados.
+- Se utilizó un tercer cliente como publicador para representar la generación de una solicitud de tutoría.
+- Se ejecutaron los comandos de publicación y suscripción desde terminales independientes.
+- Se comprobó la recepción del mensaje publicado en ambos suscriptores.
+- Se tomaron capturas de pantalla de la ejecución para documentar el funcionamiento de la comunicación PUB/SUB.
+- Se prepararon las evidencias obtenidas para incorporarlas al repositorio de GitHub.
+
+### Dificultades encontradas
+
+- El SGRA original no dispone de una integración PUB/SUB documentada y lleva tiempo sin actualizarse, por lo que ejecutar toda la aplicación para realizar la demostración implicaría trabajo adicional.
+- Era necesario comprobar el funcionamiento del patrón sin depender del backend original ni de los servicios desplegados en Azure.
+
+### Soluciones aplicadas
+
+- Se utilizó un entorno de pruebas independiente mediante Docker y Mosquitto.
+- Se simuló el evento de creación de una tutoría utilizando datos ficticios.
+- Se representaron los módulos de notificaciones y auditoría mediante clientes suscriptores independientes.
+- Se documentó la práctica como una demostración del patrón PUB/SUB y no como una funcionalidad ya implementada en el SGRA.
+
+### Resultados obtenidos
+
+- Se ejecutó una demostración local del patrón PUB/SUB mediante MQTT.
+- Se comprobó que un mensaje publicado en el tópico correspondiente podía ser recibido por dos suscriptores independientes.
+- Se evidenció el desacoplamiento entre el publicador y los consumidores, ya que el primero no necesitó establecer conexiones directas con cada suscriptor.
+- Se obtuvieron capturas de pantalla como evidencia de la ejecución.
+- La práctica permitió relacionar los fundamentos de PUB/SUB con una posible evolución de la arquitectura del SGRA.
+
+**Alcance de la prueba:** se verificó la publicación y recepción de mensajes en el entorno local. Esta demostración no constituye una integración funcional con el SGRA original ni demuestra por sí sola tolerancia a fallos o garantías de entrega ante desconexiones.
+
+### Evidencias
+
+- Capturas de pantalla del broker MQTT en ejecución.
+- Capturas de las terminales de publicación y suscripción.
+- Registros visuales de la recepción de mensajes en ambos consumidores.
+- Archivos de configuración y comandos utilizados en la práctica.
+
+**Ubicación de las evidencias:** `evidencias/Mario Practica/`.
+
+### Tiempo dedicado
+20 minutos.
