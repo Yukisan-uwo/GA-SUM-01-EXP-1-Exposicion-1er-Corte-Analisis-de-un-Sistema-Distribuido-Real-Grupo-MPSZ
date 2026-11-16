@@ -1,0 +1,99 @@
+% Sección inicial: Mario Zambrano.
+% Las afirmaciones académicas llevan \cite{} en la propia diapositiva;
+% la arquitectura existente de SGRA se documenta mediante sus repositorios publicos.
+
+\begin{frame}{SGRA: punto de partida}
+\begin{columns}[T,onlytextwidth]
+\column{0.48\textwidth}
+{\small\bfseries Arquitectura documentada}\vspace{2mm}
+\begin{center}
+\begin{tikzpicture}[node distance=0.45cm,scale=0.88,transform shape]
+\node[caja,minimum width=4.15cm] (ui) {\textbf{Angular 21}\\\scriptsize Interfaz web};
+\node[caja,minimum width=4.15cm,below=of ui] (api) {\textbf{Spring Boot}\\\scriptsize API REST + reglas};
+\node[caja,minimum width=4.15cm,below=of api] (db) {\textbf{PostgreSQL}\\\scriptsize Datos de tutorías};
+\draw[flecha] (ui) -- node[right,font=\scriptsize]{HTTPS} (api);
+\draw[flecha] (api) -- (db);
+\end{tikzpicture}
+\end{center}
+\column{0.49\textwidth}
+{\small\bfseries Necesidad planteada}\vspace{3mm}
+\begin{tikzpicture}
+\node[evento,text width=4.8cm,minimum height=1.1cm] {\bfseries Se registra una solicitud\\de tutoría};
+\end{tikzpicture}
+\vspace{3mm}
+\begin{itemize}\setlength{\itemsep}{4pt}
+  \item Notificar al docente
+  \item Registrar auditoría
+  \item Actualizar indicadores
+\end{itemize}
+\vspace{2mm}
+{\scriptsize\color{turquesa}\textbf{Pregunta:} ¿cómo comunicar el mismo evento a varios componentes?}
+\end{columns}
+\fuentes{\cite{sgra_frontend,sgra_backend,microsoft2026}}
+\end{frame}
+
+\begin{frame}{PUB/SUB: un evento, varios receptores}
+\begin{center}
+\begin{tikzpicture}[scale=0.94,transform shape]
+\node[caja,minimum width=2.55cm,minimum height=1.3cm] (publisher) at (0,0) {\textbf{Publicador}\\\scriptsize SGRA / backend};
+\node[evento,minimum width=2.8cm,minimum height=1.3cm] (broker) at (4.3,0) {\textbf{Broker}\\\scriptsize tópico: tutorías};
+\node[caja,minimum width=2.55cm] (s1) at (8.8,1.35) {\textbf{Suscriptor 1}\\\scriptsize Notificaciones};
+\node[caja,minimum width=2.55cm] (s2) at (8.8,0) {\textbf{Suscriptor 2}\\\scriptsize Auditoría};
+\node[caja,minimum width=2.55cm] (s3) at (8.8,-1.35) {\textbf{Suscriptor 3}\\\scriptsize Indicadores};
+\draw[flecha] (publisher) -- node[above,font=\scriptsize]{publica evento} (broker);
+\foreach \n in {s1,s2,s3}{\draw[flecha] (broker.east) -- (\n.west);}
+\end{tikzpicture}
+\end{center}
+\vspace{0.15cm}
+\begin{columns}[T,onlytextwidth]
+\column{0.32\textwidth}\centering\small\bfseries Desacoplamiento
+\column{0.35\textwidth}\centering\small\bfseries Comunicación asíncrona
+\column{0.31\textwidth}\centering\small\bfseries Entrega por suscripción
+\end{columns}
+\fuentes{\cite{lazidis2022,dong2024,kamoun2024,microsoft2026}}
+\end{frame}
+
+\begin{frame}{Mini práctica local: un evento, dos suscriptores}
+{\small\color{gris}Simulación de \texttt{SolicitudTutoriaCreada}; no es una función ya implementada en SGRA.}
+\vspace{2.5mm}
+\begin{columns}[T,onlytextwidth]
+\column{0.49\textwidth}
+\begin{block}{Terminal A · Notificaciones}
+{\footnotesize\ttfamily mosquitto\_sub -t\\ sgra/tutorias/creada -v}
+\end{block}
+\column{0.49\textwidth}
+\begin{block}{Terminal B · Auditoría}
+{\footnotesize\ttfamily mosquitto\_sub -t\\ sgra/tutorias/creada -v}
+\end{block}
+\end{columns}
+\vspace{3mm}
+\begin{block}{Terminal C · Publicación del evento}
+{\footnotesize\ttfamily mosquitto\_pub -t sgra/tutorias/creada\\ -m "Solicitud 42 creada"}
+\end{block}
+\begin{center}
+{\small\color{turquesa}\bfseries Resultado esperado: ambos suscriptores reciben el mismo mensaje.}
+\end{center}
+\fuentes{\cite{mosquitto_pub,mosquitto_sub,mqtt2019}}
+\end{frame}
+
+\begin{frame}{SGRA: evolución orientada a eventos}
+\begin{center}
+\begin{tikzpicture}[scale=0.84,transform shape]
+\node[caja,minimum width=2.45cm] (angular) at (0,2.2) {\textbf{Angular}\\\scriptsize Interfaz};
+\node[caja,minimum width=3cm] (api) at (4.2,2.2) {\textbf{Spring Boot}\\\scriptsize API y negocio};
+\node[caja,minimum width=2.4cm] (postgres) at (8.7,2.2) {\textbf{PostgreSQL}\\\scriptsize Persistencia};
+\draw[flecha] (angular) -- node[above,font=\scriptsize]{REST/HTTPS} (api);
+\draw[flecha] (api) -- (postgres);
+\node[evento,minimum width=3cm] (broker) at (4.2,-0.1) {\textbf{Broker de eventos}\\\scriptsize Componente propuesto};
+\draw[propuesta] (api) -- node[right,font=\scriptsize]{publicación} (broker);
+\node[caja,minimum width=2.65cm] (mail) at (0.1,-2.0) {\textbf{Notificaciones}};
+\node[caja,minimum width=2.65cm] (audit) at (4.2,-2.0) {\textbf{Auditoría}};
+\node[caja,minimum width=2.65cm] (stats) at (8.7,-2.0) {\textbf{Indicadores}};
+\foreach \n in {mail,audit,stats}{\draw[propuesta] (broker.south) -- (\n.north);}
+\end{tikzpicture}
+\end{center}
+\vspace{-0.05cm}
+{\scriptsize\textbf{Ventaja:} nuevas funciones sin llamadas directas desde el productor.\quad
+\textbf{Reto:} entrega fiable, errores y consistencia entre componentes.}
+\fuentes{\cite{sgra_frontend,sgra_backend,microsoft2026,maharjan2023,derlatka2023,bezerra2024}}
+\end{frame}

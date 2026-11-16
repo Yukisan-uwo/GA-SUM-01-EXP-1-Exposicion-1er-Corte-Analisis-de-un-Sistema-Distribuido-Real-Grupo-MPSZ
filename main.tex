@@ -1,0 +1,101 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric}
+\usepackage{booktabs}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage{xurl} % permite partir URLs largas en la bibliografía
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=black,citecolor=black}
+\usepackage[backend=biber,style=ieee,sorting=none,maxnames=3]{biblatex}
+\addbibresource{referencias.bib}
+
+\definecolor{azul}{HTML}{123B2A}
+\definecolor{azulclaro}{HTML}{EAF3EE}
+\definecolor{turquesa}{HTML}{2E6B57}
+\definecolor{turquesaclaro}{HTML}{D9EDE2}
+\definecolor{tinta}{HTML}{1F2D27}
+\definecolor{gris}{HTML}{55665D}
+\definecolor{fondo}{HTML}{FBFCFB}
+
+\setbeamercolor{normal text}{fg=tinta,bg=fondo}
+% La bibliografía no hereda el verde del color estructural del tema.
+\setbeamercolor{bibliography item}{fg=black}
+\setbeamercolor{bibliography entry author}{fg=black}
+\setbeamercolor{bibliography entry title}{fg=black}
+\setbeamercolor{bibliography entry location}{fg=black}
+\setbeamercolor{bibliography entry note}{fg=black}
+\setbeamercolor{bibliography entry journal}{fg=black}
+\AtBeginBibliography{\color{black}\sloppy\emergencystretch=2em}
+
+\setbeamercolor{structure}{fg=turquesa}
+\setbeamercolor{frametitle}{fg=azul,bg=fondo}
+\setbeamercolor{block title}{fg=white,bg=azul}
+\setbeamercolor{block body}{fg=tinta,bg=azulclaro}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\color{turquesa}\tiny$\blacksquare$}
+\setbeamertemplate{footline}{%
+  \hfill{\color{gris}\scriptsize Aplicaciones Distribuidas · UTEQ\hspace{0.7em}|\hspace{0.7em}\insertframenumber}\hspace{0.38cm}\vspace{0.13cm}}
+\setbeamertemplate{frametitle}{\vspace{0.16cm}\hspace{0.12cm}\insertframetitle\par\vspace{-0.04cm}%
+  \hspace{0.12cm}{\color{turquesa}\rule{0.86\paperwidth}{0.7pt}}\vspace{0.15cm}}
+
+\tikzset{
+   caja/.style={rounded corners=5pt,draw=azul!25,fill=azulclaro,minimum height=0.86cm,align=center,inner sep=5pt},
+   evento/.style={rounded corners=5pt,draw=turquesa!70,fill=turquesaclaro,minimum height=0.86cm,align=center,inner sep=5pt},
+   flecha/.style={-{Latex[length=2.5mm]},thick,draw=gris},
+   propuesta/.style={-{Latex[length=2.2mm]},thick,dashed,draw=turquesa}
+}
+\newcommand{\fuentes}[1]{\vfill\hfill{\tiny\color{gris}Fuentes: #1}\vspace{-0.11cm}}
+
+\title{Mensajería Publish/Subscribe}
+\subtitle{MQTT, JMS y AMQP · Aplicación propuesta al SGRA}
+\author{Grupo de exposición}
+\date{Noviembre de 2026}
+
+\begin{document}
+
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[azul] (current page.south west) rectangle (current page.north east);
+  \fill[turquesa] ([xshift=-0.55cm]current page.north east) -- ([xshift=-2.7cm]current page.north east)
+    -- ([xshift=-0.55cm,yshift=-2.2cm]current page.north east) -- cycle;
+  \draw[line width=1.4pt,turquesa!75] ([xshift=0.72cm,yshift=0.22cm]current page.south west) -- ([xshift=12.2cm,yshift=0.22cm]current page.south west);
+\end{tikzpicture}
+\vspace{0.20cm}
+{\color{white}\small UNIVERSIDAD TÉCNICA ESTATAL DE QUEVEDO}\\[1mm]
+{\color{white!75}\scriptsize Facultad de Ciencias de la Computación · Carrera de Software}\\[12mm]
+{\color{white}\fontsize{24}{28}\selectfont\bfseries Mensajería Publish/Subscribe}\\[2mm]
+{\color{white!88}\Large MQTT · JMS · AMQP}\\[2mm]
+{\color{white!75}\normalsize Propuesta de aplicación al SGRA}
+\vspace{0.6cm}
+\begin{columns}[onlytextwidth,T]
+\column{0.49\textwidth}
+{\color{white}\small\textbf{Integrantes}}\\[2mm]
+{\color{white!87}\scriptsize Zambrano Parraga Luis Mario}\\[1.2mm]
+{\color{white!87}\scriptsize Manotoa Alava Carlos Alexander}\\[1.2mm]
+{\color{white!87}\scriptsize Piguave Montaño Nixon Antonio}\\[1.2mm]
+{\color{white!87}\scriptsize Silva Triviño John Jairo}
+\column{0.48\textwidth}
+{\color{white}\small\textbf{Asignatura}}\\[1.6mm]
+{\color{white!87}\scriptsize Aplicaciones Distribuidas · ISR-701}\\[1mm]
+{\color{white!87}\scriptsize Séptimo nivel · Paralelo A}\\[1mm]
+{\color{white!87}\scriptsize Docente: Gleiston C. Guerrero-Ulloa, PhD}
+\end{columns}
+\end{frame}
+
+% Cada integrante edita exclusivamente su archivo de seccion.
+\input{secciones/mario.tex}
+\input{secciones/carlos.tex}
+\input{secciones/nixon.tex}
+\input{secciones/john.tex}
+
+\renewcommand*{\bibfont}{\scriptsize} % tamaño legible para 16:9
+% Para la entrega final: ampliar con las fuentes que citen los demás integrantes.
+% Las seis revistas con DOI reciente se citan en las secciones y se imprimen.
+\begin{frame}[allowframebreaks]{Referencias}
+\printbibliography[heading=none]
+\end{frame}
+\end{document}
