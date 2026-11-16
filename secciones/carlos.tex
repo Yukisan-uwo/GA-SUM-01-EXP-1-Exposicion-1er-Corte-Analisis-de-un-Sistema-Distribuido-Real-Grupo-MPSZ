@@ -1,3 +1,316 @@
-% Sección reservada para carlos.
-% Agregar aquí diapositivas propias con sus fuentes \cite{clave}.
-% Mantener diagramas originales y evitar afirmar que la propuesta ya está implementada.
+% Carlos Manotoa: MQTT. Paleta, cabecera y pie heredados de main.tex.
+% Autocontenido: gráficos vectoriales TikZ, sin imágenes externas.
+% El texto de exposición se conserva en notas Beamer, ocultas por defecto.
+\begingroup
+\section{Protocolo MQTT}
+
+% Ilustraciones vectoriales editables, sin archivos externos.
+\newcommand{\mqttIcon}[3]{%
+\begingroup
+\pgfmathtruncatemacro{\mqttIconId}{#1+3*#2}%
+\resizebox{#3}{#3}{%
+\begin{tikzpicture}[x=1cm,y=1cm,line width=.9pt,
+  line cap=round,line join=round,draw=azul]
+\path[use as bounding box] (0,0) rectangle (4,4);
+\clip (0,0) rectangle (4,4);
+\ifcase\mqttIconId
+% 0: Portátil.
+\shade[top color=white,bottom color=turquesaclaro,draw=azul,rounded corners=3pt]
+ (.55,1.55)--(.38,3.43)--(2.94,3.43)--(3.15,1.55)--cycle;
+\path[fill=white,draw=turquesa] (.73,1.79)--(.59,3.23)--(2.76,3.23)--(2.92,1.79)--cycle;
+\draw[turquesa,line width=1.4pt] (1.14,2.16)--(1.72,2.83)--(2.35,2.16);
+\foreach \x/\y in {1.14/2.16,1.72/2.83,2.35/2.16}{\draw[fill=turquesaclaro] (\x,\y) circle (.16);}
+\shade[top color=azulclaro,bottom color=turquesaclaro,draw=azul]
+ (.55,1.55)--(3.15,1.55)--(3.75,.82)--(.83,.82)--cycle;
+\path[fill=turquesa!35,draw=azul] (.83,.82)--(3.75,.82)--(3.64,.68)--(.85,.68)--cycle;
+\foreach \y/\xl/\xr in {1.37/.83/3.04,1.19/.94/3.20}{\draw[gris,line width=.55pt] (\xl,\y)--(\xr,\y);}
+\foreach \x in {1.05,1.36,1.67,1.98,2.29,2.60,2.91}{\draw[gris,line width=.45pt] (\x,1.48)--(\x+.13,1.08);}
+\draw[turquesa,fill=white] (1.65,1.02)--(2.52,1.02)--(2.66,.88)--(1.77,.88)--cycle;
+\or
+% 1: Servidor.
+\path[fill=white,draw=turquesa!65] (.72,2.73)
+ .. controls (.18,2.75) and (.12,3.34) .. (.8,3.39)
+ .. controls (.78,3.84) and (1.48,4.03) .. (1.83,3.6)
+ .. controls (2.2,4.1) and (2.98,3.9) .. (3.05,3.41)
+ .. controls (3.87,3.5) and (3.83,2.74) .. (3.16,2.73)--cycle;
+\path[fill=turquesa!55,draw=azul] (2.77,.6)--(3.29,.91)--(3.29,3.22)--(2.77,2.95)--cycle;
+\shade[left color=white,right color=turquesaclaro,draw=azul]
+ (.85,2.95)--(1.37,3.22)--(3.29,3.22)--(2.77,2.95)--cycle;
+\shade[top color=turquesaclaro,bottom color=turquesa!40,draw=azul,rounded corners=2pt]
+ (.85,.6) rectangle (2.77,2.95);
+\foreach \y in {.85,1.52,2.19}{
+ \path[fill=azulclaro,draw=azul,rounded corners=2pt] (1.02,\y) rectangle (2.59,\y+.47);
+ \draw[fill=turquesa] (1.24,\y+.235) circle (.065);
+ \draw[turquesa,line width=1pt] (1.45,\y+.235)--(1.85,\y+.235);
+ \foreach \x in {2.10,2.24,2.38}{\draw[azul,line width=1pt] (\x,\y+.12)--(\x,\y+.35);}
+}
+\path[fill=azul] (1,.45) rectangle (1.42,.60);
+\path[fill=azul] (2.18,.45) rectangle (2.6,.60);
+\or
+% 2: Notificaciones.
+\draw[fill=turquesaclaro] (2,3.53) circle (.12);
+\shade[left color=white,right color=turquesa!40,draw=azul]
+ (1.13,2.15) .. controls (1.55,2.4) and (1.15,3.44) .. (2,3.44)
+ .. controls (2.85,3.44) and (2.45,2.4) .. (2.87,2.15)--cycle;
+\draw[fill=turquesaclaro] (1.98,2.13) ellipse (.94 and .12);
+\path[fill=azul] (1.8,1.99) arc[start angle=180,end angle=360,radius=.2];
+\draw[turquesa] (.85,2.75) arc[start angle=205,end angle=155,radius=.65];
+\draw[turquesa] (3.15,2.75) arc[start angle=-25,end angle=25,radius=.65];
+\path[fill=white,draw=azul,rounded corners=2pt] (.47,.62) rectangle (2.78,1.75);
+\draw[turquesa] (.49,1.71)--(1.63,.93)--(2.76,1.71);
+\draw[turquesa] (.5,.65)--(1.22,1.14);
+\draw[turquesa] (2.75,.65)--(2.03,1.14);
+\draw[fill=turquesaclaro] (3.13,1.55) circle (.35);
+\shade[top color=turquesaclaro,bottom color=turquesa!45,draw=azul]
+ (2.55,.48)--(2.55,.76) .. controls (2.55,1.29) and (3.7,1.29)
+ .. (3.7,.76)--(3.7,.48)--cycle;
+\or
+% 3: Auditoría.
+\shade[left color=white,right color=turquesa!40,draw=azul]
+ (.25,.68)--(.25,2.13) arc[start angle=180,end angle=360,x radius=.75,y radius=.22]
+ --(1.75,.68) arc[start angle=0,end angle=-180,x radius=.75,y radius=.22];
+\draw[fill=azulclaro] (1,2.13) ellipse (.75 and .22);
+\foreach \y in {1.12,1.59}{\draw[turquesa] (.25,\y) arc[start angle=180,end angle=360,x radius=.75,y radius=.22];}
+\shade[top color=turquesaclaro,bottom color=turquesa!35,draw=azul,rounded corners=4pt]
+ (1.2,.42) rectangle (3.65,3.34);
+\path[fill=white,draw=azul,rounded corners=2pt] (1.37,.61) rectangle (3.48,3.12);
+\path[fill=turquesaclaro,draw=azul,rounded corners=2pt] (1.91,2.99) rectangle (2.94,3.46);
+\draw[fill=turquesaclaro] (2.425,3.49) circle (.16);
+\foreach \y in {1.02,1.75,2.48}{
+ \draw[turquesa] (1.63,\y) rectangle (2.08,\y+.38);
+ \draw[azul,line width=1.5pt] (1.68,\y+.18)--(1.82,\y+.05)--(2.14,\y+.43);
+ \draw[turquesa] (2.38,\y+.28)--(3.15,\y+.28);
+ \draw[turquesa!60] (2.38,\y+.09)--(2.96,\y+.09);
+}
+\or
+% 4: Base de datos.
+\foreach \y in {.66,1.52,2.38}{
+ \shade[left color=white,right color=turquesa!45,draw=azul]
+ (.55,\y)--(.55,\y+.61) arc[start angle=180,end angle=360,x radius=1.45,y radius=.38]
+ --(3.45,\y) arc[start angle=0,end angle=-180,x radius=1.45,y radius=.38];
+ \draw[fill=azulclaro] (2,\y+.61) ellipse (1.45 and .38);
+}
+\or
+% 5: Estudiante, figura esquemática.
+\shade[top color=turquesaclaro,bottom color=turquesa!55,draw=azul]
+ (.72,.4)--(.87,1.35) .. controls (1.1,1.84) and (2.9,1.84)
+ .. (3.13,1.35)--(3.28,.4)--cycle;
+\path[fill=azulclaro,draw=azul] (1.72,1.55) rectangle (2.28,2.03);
+\draw[fill=white] (2,2.48) ellipse (.67 and .82);
+\path[fill=azul] (1.36,2.66) .. controls (1.1,3.49) and (2.65,3.61)
+ .. (2.67,2.65)--(2.51,2.97)--(2.08,3.12)--(1.64,2.87)--cycle;
+\fill[azul] (1.76,2.54) circle (.045);
+\fill[azul] (2.24,2.54) circle (.045);
+\draw[turquesa] (1.82,2.19) .. controls (2,2.07) and (2.12,2.11) .. (2.22,2.23);
+\path[fill=turquesa,draw=azul] (1.36,3.18)--(1.36,3.5)--(2.64,3.5)--(2.64,3.18)
+ .. controls (2.25,3.04) and (1.75,3.04) .. (1.36,3.18);
+\path[fill=turquesaclaro,draw=azul] (.9,3.5)--(2,3.91)--(3.12,3.5)--(2,3.1)--cycle;
+\draw[azul] (2.95,3.48)--(2.95,2.95);
+\draw[azul,line width=2pt] (2.95,2.96)--(2.95,2.79);
+\path[fill=white,draw=azul,rounded corners=2pt] (1.33,.45) rectangle (2.63,1.48);
+\path[fill=turquesaclaro,draw=azul] (1.4,.51) rectangle (2.63,1.4);
+\draw[turquesa] (1.51,.6)--(1.51,1.31);
+\draw[turquesa] (1.7,1.12)--(2.36,1.12);
+\fi
+\end{tikzpicture}}%
+\endgroup
+}
+
+\tikzset{
+  mqttlabel/.style={font=\small\bfseries,text=azul,align=center},
+  mqttdata/.style={font=\scriptsize\ttfamily,text=tinta,align=center},
+  mqttflow/.style={-{Latex[length=2.5mm]},line width=1.2pt,draw=turquesa},
+  mqttsub/.style={-{Latex[length=2mm]},dashed,line width=.8pt,draw=gris},
+  mqttpacket/.style={-{Latex[length=1.7mm]},line width=.7pt,draw=turquesa},
+  mqttillustration/.style={inner sep=0pt,outer sep=0pt}
+}
+% Reserva una línea propia encima del pie; no modifica main.tex.
+\renewcommand{\fuentes}[1]{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=south west,font=\tiny,text=gris]
+      at ([xshift=.55cm,yshift=.48cm]current page.south west)
+      {Fuentes: #1};
+  \end{tikzpicture}%
+}
+
+% ------------------------------------------------------------
+% 1. Arquitectura y secuencias QoS
+% ------------------------------------------------------------
+\begin{frame}{MQTT · Arquitectura y QoS}
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.south west)}]
+  \node[mqttillustration] (pub) at (2.0,5.7) {\mqttIcon{0}{0}{2.65cm}};
+  \node[mqttillustration] (broker) at (7.5,5.7) {\mqttIcon{1}{0}{2.75cm}};
+  \node[mqttillustration] (suba) at (13.2,6.65) {\mqttIcon{2}{0}{1.8cm}};
+  \node[mqttillustration] (subb) at (13.2,4.65) {\mqttIcon{0}{1}{1.8cm}};
+  \node[mqttlabel] at (2.0,4.15) {Publicador};
+  \node[mqttlabel] at (7.5,4.15) {Broker MQTT};
+  \node[mqttlabel] at (13.2,5.6) {Suscriptor A};
+  \node[mqttlabel] at (13.2,3.6) {Suscriptor B};
+  \node[mqttdata] at (2.0,7.35) {TCP/IP};
+  \draw[mqttflow] (3.4,5.7) -- node[above,font=\scriptsize]{PUBLISH} (6.0,5.7);
+  \draw[mqttflow] (9.0,5.7) -- (10.0,5.7) |- (12.2,6.65);
+  \draw[mqttflow] (10.0,5.7) |- (12.2,4.65);
+  \node[mqttdata] at (9.55,7.25) {sgra/tutorias/creada};
+  \draw[draw=turquesa!35] (.8,3.35) -- (15.2,3.35);
+
+  % Cada diagrama muestra un único tramo emisor--receptor MQTT.
+  \foreach \x/\q in {0.75/0,5.65/1,10.55/2}{
+    \node[mqttlabel,anchor=west] at (\x,3.0) {QoS \q};
+    \node[font=\scriptsize,text=gris] at (\x+.65,2.58) {Emisor};
+    \node[font=\scriptsize,text=gris] at (\x+3.5,2.58) {Receptor};
+    \draw[draw=gris!35] (\x+.65,2.37) -- (\x+.65,.98);
+    \draw[draw=gris!35] (\x+3.5,2.37) -- (\x+3.5,.98);
+  }
+  \draw[mqttpacket] (1.4,2.12) -- node[above,font=\scriptsize]{PUBLISH} (4.25,2.12);
+  \draw[mqttpacket] (6.3,2.12) -- node[above,font=\scriptsize]{PUBLISH} (9.15,2.12);
+  \draw[mqttpacket] (9.15,1.51) -- node[above,font=\scriptsize]{PUBACK} (6.3,1.51);
+  \draw[mqttpacket] (11.2,2.22) -- node[above,font=\scriptsize]{PUBLISH} (14.05,2.22);
+  \draw[mqttpacket] (14.05,1.84) -- node[above,font=\scriptsize]{PUBREC} (11.2,1.84);
+  \draw[mqttpacket] (11.2,1.46) -- node[above,font=\scriptsize]{PUBREL} (14.05,1.46);
+  \draw[mqttpacket] (14.05,1.08) -- node[above,font=\scriptsize]{PUBCOMP} (11.2,1.08);
+\end{tikzpicture}
+\fuentes{\cite{shahri2022mqtt,im2023emqtt,innamorati2026mqtt}}
+\note{
+MQTT es un protocolo ligero de mensajería de la capa de aplicación,
+habitualmente sobre TCP/IP. Los clientes pueden publicar, suscribirse
+o desempeñar ambos papeles. El broker recibe las publicaciones y las
+distribuye según las suscripciones. El publicador no necesita conocer
+la dirección ni la cantidad de receptores.
+\par
+El tópico de esta exposición es sgra/tutorias/creada. Los niveles se
+separan mediante barras. Los filtros admiten + para un nivel y \# para
+los niveles restantes; una suscripción a sgra/tutorias/\# puede recibir
+varios tipos de eventos bajo esa jerarquía. El esquema superior muestra
+la distribución de publicaciones; la suscripción se establece antes.
+\par
+Los diagramas inferiores representan un único intercambio emisor--receptor.
+QoS 0 envía PUBLISH sin confirmación MQTT: entrega como máximo una vez,
+con posibilidad de pérdida. QoS 1 utiliza PUBLISH y PUBACK: entrega al
+menos una vez, con posibles duplicados. QoS 2 utiliza PUBLISH, PUBREC,
+PUBREL y PUBCOMP para entregar exactamente una vez en ese intercambio.
+\par
+Publicador--broker y broker--suscriptor son intercambios distintos.
+El acuse del broker no demuestra que el consumidor haya terminado su
+tarea. QoS 2 no garantiza una única ejecución de la operación de negocio.
+Tampoco los niveles QoS establecen un plazo máximo de entrega.
+}
+\end{frame}
+
+% ------------------------------------------------------------
+% 2. Demostración local. Datos esperados, no evidencia fabricada.
+% ------------------------------------------------------------
+\begin{frame}{Mosquitto · MQTTX}
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.south west)}]
+  \node[mqttillustration] at (2.05,5.45) {\mqttIcon{0}{0}{2.65cm}};
+  \node[mqttillustration] at (7.5,5.45) {\mqttIcon{1}{0}{2.65cm}};
+  \node[mqttillustration] at (13.2,6.2) {\mqttIcon{0}{0}{1.8cm}};
+  \node[mqttillustration] at (13.2,4.1) {\mqttIcon{0}{0}{1.8cm}};
+  \node[mqttlabel] at (2.05,7.25) {MQTTX};
+  \node[mqttlabel] at (7.5,7.25) {Mosquitto};
+  \node[mqttdata] at (7.5,6.9) {127.0.0.1:1883};
+  \node[mqttdata] at (2.05,3.95) {pub-sgra};
+  \node[mqttlabel] at (13.2,7.25) {MQTTX};
+  \node[mqttdata] at (13.2,5.15) {sub-notificaciones};
+  \node[mqttdata] at (13.2,3.05) {sub-auditoria};
+  \draw[mqttflow] (3.4,5.45) -- node[above,font=\scriptsize]{PUBLISH} (6.0,5.45);
+  \draw[mqttflow] (9.0,5.3) -- (10.0,5.3) |- (12.2,6.0);
+  \draw[mqttflow] (10.0,5.3) |- (12.2,3.9);
+  \draw[mqttsub] (12.2,6.5) -- node[above,font=\scriptsize]{SUBSCRIBE} (9.0,6.5);
+  \draw[mqttsub] (12.2,4.4) -- (10.5,4.4) -- (9.0,4.85);
+  \node[mqttdata] at (7.5,3.85) {QoS 1\quad Retain 0};
+  \node[mqttdata,font=\small\ttfamily] at (7.5,2.75) {sgra/tutorias/creada};
+  \draw[draw=turquesa!35] (.8,2.3) -- (15.2,2.3);
+  \node[mqttdata,text=gris] at (2.4,1.9) {eventoId};
+  \node[mqttdata,text=gris] at (7.8,1.9) {tipo};
+  \node[mqttdata,text=gris] at (13.3,1.9) {solicitudId};
+  \node[mqttlabel] at (2.4,1.4) {evt-001};
+  \node[mqttdata,font=\small\ttfamily] at (7.8,1.4) {SolicitudTutoriaCreada};
+  \node[mqttlabel,font=\Large\bfseries] at (13.3,1.4) {42};
+\end{tikzpicture}
+\fuentes{\cite{mqtt2019,mosquitto_pub,mosquitto_sub}; \href{https://mqttx.app/docs}{MQTTX}}
+\note{
+Esta es la configuración de una demostración local con datos ficticios,
+sin conexión con el SGRA real. Mosquitto es el broker y MQTTX Desktop
+es el cliente gráfico. Las tres conexiones tienen identificadores distintos.
+\par
+Primero se conectan sub-notificaciones y sub-auditoria y se suscriben a
+sgra/tutorias/creada solicitando QoS 1. Las flechas discontinuas indican
+esas suscripciones. Después pub-sgra publica un JSON en el mismo tópico,
+con QoS 1 y Retain desactivado. Las flechas continuas representan el
+recorrido esperado de esa publicación.
+\par
+El JSON tiene tres campos: eventoId con valor evt-001; tipo con valor
+SolicitudTutoriaCreada; y solicitudId con valor numérico 42.
+El identificador del evento y el de la solicitud cumplen funciones diferentes.
+\par
+El resultado esperado es recibir el mismo evento en ambos suscriptores.
+No se afirma que esta ejecución ya se haya realizado: se necesitan
+capturas auténticas después de probarla. La ilustración es un esquema,
+no una captura de MQTTX. Una recepción satisfactoria no demuestra
+recuperación ante fallos. La configuración del ZIP no persiste mensajes en disco.
+}
+\end{frame}
+
+% ------------------------------------------------------------
+% 3. SGRA: arquitectura de referencia y mensajería propuesta.
+% ------------------------------------------------------------
+\begin{frame}{SGRA · Propuesta MQTT}
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.south west)}]
+  \node[mqttillustration] at (1.5,6.15) {\mqttIcon{2}{1}{2.1cm}};
+  \node[mqttillustration] at (5.05,6.15) {\mqttIcon{0}{0}{2.1cm}};
+  \node[mqttillustration] at (8.8,6.15) {\mqttIcon{1}{0}{2.1cm}};
+  \node[mqttillustration] at (13.25,6.15) {\mqttIcon{1}{1}{2.1cm}};
+  \node[mqttlabel] at (1.5,4.9) {Estudiante};
+  \node[mqttlabel] at (5.05,4.9) {Angular};
+  \node[mqttlabel] at (8.8,4.9) {Spring Boot};
+  \node[mqttlabel] at (13.25,4.9) {PostgreSQL};
+  \draw[mqttflow] (2.65,6.15) -- (3.9,6.15);
+  \draw[mqttflow] (6.2,6.15) -- node[above,font=\scriptsize]{REST/HTTPS} (7.65,6.15);
+  \draw[mqttflow] (9.95,6.15) -- node[above,font=\scriptsize]{SQL} (12.1,6.15);
+
+  \node[mqttillustration] at (8.8,2.95) {\mqttIcon{1}{0}{1.95cm}};
+  \node[mqttlabel] at (8.8,1.8) {Mosquitto};
+  \node[mqttillustration] at (13.25,3.5) {\mqttIcon{2}{0}{1.4cm}};
+  \node[mqttillustration] at (13.25,1.65) {\mqttIcon{0}{1}{1.4cm}};
+  \node[mqttlabel,font=\scriptsize\bfseries] at (13.25,2.7) {Notificaciones};
+  \node[mqttlabel,font=\scriptsize\bfseries] at (13.25,.85) {Auditoría};
+  \draw[propuesta] (8.8,4.6) -- (8.8,4.0);
+  \node[mqttdata,anchor=east] at (8.35,4.3) {SolicitudTutoriaCreada};
+  \draw[propuesta] (9.9,2.95) -- (10.65,2.95) |- (12.4,3.5);
+  \draw[propuesta] (10.65,2.95) |- (12.4,1.65);
+
+  \node[mqttdata,text=turquesa,anchor=west] at (1.0,2.9) {sgra/tutorias/creada};
+  \node[mqttlabel,anchor=west] at (1.0,2.2) {QoS 1\quad +\quad eventoId};
+  \node[mqttdata,text=gris,anchor=west] at (1.0,1.5) {TLS / ACL\qquad Persistencia};
+\end{tikzpicture}
+\fuentes{\cite{sgra_frontend,sgra_backend,mqtt2019,shahri2022mqtt}}
+\note{
+La fila superior retoma la arquitectura de referencia documentada por el
+equipo: interfaz Angular, backend Spring Boot y base de datos PostgreSQL.
+La mensajería MQTT de la parte inferior es una propuesta de mejora;
+las conexiones discontinuas indican los componentes y flujos propuestos.
+Mosquitto es una posible implementación del broker, no una dependencia
+que se haya demostrado como instalada en el SGRA.
+\par
+Después de registrar una solicitud, el backend podría publicar el evento
+SolicitudTutoriaCreada. Notificaciones y auditoría podrían reaccionar
+mediante suscripciones, sin una llamada directa del backend a cada consumidor.
+Se podrían incorporar otros receptores mediante nuevas suscripciones.
+\par
+Como punto de partida se propone evaluar QoS 1 y un identificador único
+del evento. Cada consumidor debe reconocer eventos ya procesados para
+no repetir sus efectos cuando reciba duplicados. QoS 2 tampoco sustituye
+la coordinación necesaria para ejecutar una operación de negocio una sola vez.
+\par
+Hay que resolver qué ocurre si el broker deja de estar disponible y qué
+sucede si se confirma la transacción en la base de datos pero falla la
+publicación del evento. MQTT no coordina por sí solo esas dos operaciones.
+\par
+TLS representa el cifrado del transporte; ACL, los permisos por tópico.
+La persistencia y las sesiones deben configurarse según los requisitos
+de recuperación. La demo inicial no proporciona una solución completa
+de continuidad de servicio. QoS no establece un plazo máximo de entrega:
+las afirmaciones de latencia y capacidad requieren mediciones en el sistema.
+}
+\end{frame}
+\endgroup
