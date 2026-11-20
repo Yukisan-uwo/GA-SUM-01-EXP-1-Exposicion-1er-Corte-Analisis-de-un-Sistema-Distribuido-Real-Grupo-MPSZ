@@ -1,0 +1,11 @@
+# Práctica AMQP con RabbitMQ para el SSDC (datos ficticios, solo entorno local).
+services:
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: ssdc-rabbitmq
+    ports:
+      - "5672:5672"     # AMQP
+      - "15672:15672"   # Panel de administración web
+    environment:
+      RABBITMQ_DEFAULT_USER: demo
+      RABBITMQ_DEFAULT_PASS: demo-local
