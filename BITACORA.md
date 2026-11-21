@@ -462,3 +462,25 @@ El código y las instrucciones quedaron incorporados en `demo/sgra-mqtt/`, junto
 Utilicé ChatGPT como apoyo para organizar los archivos.
 
 ---
+
+## 21 de noviembre de 2026 — Evidencias de lectura y bosquejo de arquitectura
+
+**Integrante:** Zambrano Parraga Luis Mario.
+
+### Actividades realizadas
+- Revisé tres artículos académicos relacionados con PUB/SUB, MQTT y sistemas de mensajería.
+- Preparé capturas con fragmentos relevantes para respaldar los conceptos utilizados en mi exposición.
+- Organicé las evidencias en `evidencias/Mario Practica/evidencia-lectura/`.
+- Incorporé el bosquejo de arquitectura como material visual y actualicé su referencia en `notas.tex`.
+
+### Dificultades y soluciones
+Fue necesario seleccionar fragmentos relacionados directamente con el tema y organizar las capturas para facilitar su identificación. También se ajustó la ruta del bosquejo dentro del documento LaTeX.
+
+### Resultados
+Se incorporaron tres evidencias de lectura académica y se actualizó el material de apoyo de las notas grupales.
+
+### Uso de IA
+Utilicé ChatGPT como apoyo para localizar los apartados académicos pertinentes.
+
+---
+
