@@ -81,3 +81,23 @@ La práctica demuestra la distribución de un evento a dos suscripciones no dura
 Utilicé  Codex para organizar el trabajo, consultar documentación, preparar borradores de código Java, diagramas TikZ, y estructura de diapositivas en latex, y tambien para un borrador de un guion para la exposicion.
 
 Quedan pendientes la revisión y el ensayo cronometrado del guion, la integración de mi explicación en las notas LaTeX del equipo y la preparación de respuestas.
+## 21 de noviembre de 2026 — Preparación de notas y revisión de fuentes
+
+**Modalidad:** preparación individual con apoyo de Codex. Registro posterior al commit de la práctica y al de la bitácora; no acredita ensayo ni lectura personal completados.
+
+- Se preparó un fragmento LaTeX de mi explicación, con distribución prevista de 45 segundos de conceptos, 75 segundos de práctica y 60 segundos de aplicación al RTV.
+- Se generó y revisó visualmente una vista previa individual de una página con bibliografía IEEE. Su incorporación al documento grupal sigue pendiente.
+- El asistente comprobó las páginas oficiales de Jakarta y Spring y los datos editoriales de «Benchmarking Message Queues». El DOI 10.3390/telecom4020018 corresponde a los autores, título, revista, volumen y páginas registrados.
+- Se descargó el PDF original del artículo y se identificaron las páginas 303 y 310 para orientar mi lectura
+- Se mantuvo el alcance de la práctica: suscripciones no durables, datos ficticios y ausencia de integración con los servicios reales del RTV.
+
+**Archivos:** `Nixon Piguave/notas/`, `Nixon Piguave/fuentes/`, bibliografía individual y README individual.
+
+
+### Evidencia de lectura aportada durante la misma fecha
+
+Aporté una captura de la página 303 del artículo «Benchmarking Message Queues», con la frase sobre latencia y throughput subrayada y una anotación relacionada con el RTV. La evidencia está en `Nixon Piguave/evidencias/lectura/`. El README aclara que la recepción del mismo evento se comprobó en la práctica, mientras que esas métricas no se midieron. 
+
+## Declaración de uso de IA — actualización del 21/11/2026
+
+Se utilizó OpenAI en Codex para organizar el aporte JMS, consultar fuentes, preparar borradores de código Java, configuración Docker, diagramas TikZ, estructurar el latex de las diapositivas y guion. Se ejecutó manualmente la práctica documentada en las seis capturas. Revisé personalmente las fuentes.

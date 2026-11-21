@@ -31,7 +31,32 @@ La compilación final del equipo sigue siendo `pdflatex main.tex`, `biber main`,
 1. Análisis del RTV y adaptación conceptual de la sección JMS.
 2. Práctica JMS del RTV ejecutada y diapositiva del ejemplo actualizada con el resultado observado. Seis capturas de ejecución incorporadas.
 
-Quedan la evidencia de lectura, el guion para las notas y el ensayo. Las capturas anteriores de tutorías se conservan con su significado original.
+El guion LaTeX y su PDF individual están preparados en `notas/`. Se incorporó una captura anotada de la página 303 en `evidencias/lectura/`. Quedan profundizar la lectura, ensayar e integrar el aporte en las notas grupales. Las capturas anteriores de tutorías se conservan con su significado original.
 
 
 
+
+## Notas y revisión de fuentes
+
+- `fuentes/revision-fuentes.md`: revisión técnica de las tres fuentes y páginas para orientar la lectura.
+- `fuentes/maharjan2023-benchmarking-message-queues.pdf`: artículo original sin anotaciones añadidas.
+
+El PDF individual no sustituye las notas grupales de 2 a 4 páginas. La captura del fragmento subrayado está en `evidencias/lectura/`, acompañada de una precisión sobre la anotación. Deben completarse la revisión de las fuentes y el ensayo personal.
+
+
+## Notas individuales simplificadas
+
+La carpeta `notas/` contiene únicamente `notas-nixon.tex` y `notas-nixon.pdf`. El archivo fuente reúne el guion y el aporte individual; utiliza `../fuentes-nixon.bib`. La declaración de uso de IA se conserva en `BITACORA.md`.
+
+Desde `Nixon Piguave/notas/`, ejecutar:
+
+```text
+pdflatex notas-nixon.tex
+biber notas-nixon
+pdflatex notas-nixon.tex
+pdflatex notas-nixon.tex
+```
+
+Dependencias: pdfLaTeX, Biber, article, babel/español, fontenc, inputenc, lmodern, geometry, microtype, csquotes, xurl, hyperref, biblatex y biblatex-ieee.
+
+Para integrar el guion en las notas del equipo, trasladar el contenido que está entre `\begin{document}` y `\end{document}`, usando el preámbulo y la bibliografía comunes. Evitar duplicar la impresión de referencias. El documento individual no reemplaza el documento grupal de 2 a 4 páginas.
