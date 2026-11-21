@@ -1,0 +1,37 @@
+% Incorporar desde el documento grupal con \input{notas/carlos.tex}
+% si el archivo principal está en la raíz. Las citas usan referencias.bib.
+
+\subsection{Carlos Manotoa · MQTT aplicado a CLAB}
+
+\paragraph{Arquitectura y comunicación.}
+CLAB gestiona los laboratorios informáticos de la UTEQ. Cuando el
+administrador marca una falla como resuelta, Angular envía una petición REST a
+Spring Boot y espera su respuesta. El backend actualiza el reporte en
+PostgreSQL, guarda el seguimiento y avisa al docente que reportó la falla.
+Para el administrador, todo empieza con un botón. La aplicación se encarga del
+acceso a la base de datos \cite[sección~3.2 y caso CU-04]{clab2026}.
+
+\paragraph{Despliegue y CAP/PACELC.}
+El diagrama muestra un servidor PostgreSQL. Si Spring Boot pierde la conexión
+con ese servidor, no hay un mecanismo de conmutación automática documentado.
+Para aplicar CAP y PACELC haría falta conocer la replicación, el comportamiento
+ante particiones y cómo se resuelve el compromiso entre latencia y consistencia
+en operación normal. El informe permite identificar la dependencia de la base
+de datos, pero deja esos puntos abiertos \cite[figura~4]{clab2026}.
+
+\paragraph{Fallo observado durante las pruebas.}
+En una prueba con Postman, un bloqueo por evento institucional dejó sin aviso
+a los docentes con reservas afectadas. El equipo corrigió una condición en
+\texttt{BloqueoService} durante el mismo sprint. Para verificar el flujo
+completo, comprobaría que se registre el bloqueo y se genere el aviso \cite[sección~6.5.2]{clab2026}.
+
+\paragraph{Propuesta y demostración.}
+Para la resolución de fallas, propongo guardar el evento pendiente en la misma
+transacción que actualiza el reporte. Así, si Mosquitto está caído, un proceso
+puede reintentar la publicación y el aviso se puede demorar sin deshacer la
+resolución. En MQTTX publico \texttt{ReporteFallaResuelto} en
+\texttt{clab/fallas/resuelta} y muestro el mismo mensaje en Notificaciones y
+Auditoría. La demo comprueba la entrega a dos suscriptores conectados con QoS~1.
+El broker distribuye por tópico. Con QoS~1, la confirmación es por tramo y
+pueden llegar duplicados. Cada consumidor podría reconocerlos mediante
+\texttt{eventoId} \cite{mqtt2019}.

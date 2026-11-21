@@ -25,6 +25,10 @@ y se ejecuta de manera independiente del sistema real.
 ```text
 .
 ├── main.tex
+├── notas.tex
+├── notas.pdf
+├── notas/
+│   └── carlos.tex
 ├── referencias.bib
 ├── BITACORA.md
 ├── README.md
@@ -103,6 +107,30 @@ paquetes y componentes:
 3. Utilizar pdfLaTeX y Biber.
 4. Recompilar desde cero si las referencias no se actualizan.
 
+## Compilación de las notas grupales
+
+El borrador de [las notas](notas.pdf) se compila desde la raíz del repositorio.
+Usa pdfLaTeX, Biber y la bibliografía compartida. Requiere `babel` con
+español, `lmodern`, `geometry`, `graphicx`, `booktabs`, `tabularx`,
+`csquotes`, `biblatex-ieee`, `xurl` y `hyperref`.
+
+```bash
+pdflatex -interaction=nonstopmode -halt-on-error notas.tex
+biber notas
+pdflatex -interaction=nonstopmode -halt-on-error notas.tex
+pdflatex -interaction=nonstopmode -halt-on-error notas.tex
+```
+
+Carlos está integrado desde `notas/carlos.tex`. Mario, Nixon y John pueden
+agregar `notas/mario.tex`, `notas/nixon.tex` y `notas/john.tex`. Cada
+fragmento empieza con su encabezado `\subsection` y usa las citas de
+`referencias.bib`. El documento carga cada fragmento cuando existe.
+
+Antes de publicar la versión final, completar las declaraciones de IA y
+guardar la foto original del bosquejo como `evidencias/bosquejo-inicial.jpg`.
+Al recompilar, comprobar que el anexo muestra los nombres y la fecha y que
+el PDF completo tiene entre 2 y 4 páginas.
+
 ## Demostración MQTT
 
 La [demo MQTT de Carlos](demo/PRACTICA-CLAB.md) simula el evento
@@ -138,16 +166,14 @@ Este apoyo no sustituye la lectura de las fuentes ni el
 dominio que debe demostrar cada integrante durante la
 exposición.
 
+**Declaración de Carlos Manotoa.** Se utilizó Codex como apoyo para la búsqueda y el filtrado de información, para la transformación rápida de contenido entre formatos (de txt a tex o md) y como apoyo en la resolución de los problemas encontrados. No obstante, la redacción, la revisión final y la documentación fueron realizadas y revisadas por el estudiante.
+
 ## Material grupal pendiente de integración
 
 - Completar las secciones de JMS y AMQP.
 - Integrar los apartados de análisis exigidos por la guía.
-- Incorporar el documento independiente de notas, de 2 a
-  4 páginas, con su fuente LaTeX y PDF.
-- Incluir en las notas la tabla de aportes, la declaración
-  de IA y la fotografía del bosquejo inicial.
-- Registrar las instrucciones de compilación del documento
-  de notas cuando se incorpore.
+- Completar las notas grupales con los guiones y declaraciones de IA
+  pendientes y la fotografía original del bosquejo.
 - Añadir el enlace accesible al video del ensayo grupal.
 
 ## Video del ensayo

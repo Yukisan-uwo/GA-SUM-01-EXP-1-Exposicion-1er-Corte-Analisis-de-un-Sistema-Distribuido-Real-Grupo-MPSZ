@@ -119,7 +119,7 @@ La prueba comprobó la distribución del evento durante esa ejecución. No se re
 - `evidencias/carlos-mqtt/`: capturas de la práctica y documentación de las evidencias.
 - Commit inicial de la sección: `953e53ebf40083ada8ecc8c4d7ac993f3eb16106`, con el mensaje «Carlos: Diapositivas + ejercicio (pendiente de revisión)».
 
-### Uso de IA y verificación
+### Registro del apoyo de IA y verificación
 
 Se utilizó Codex como herramienta de apoyo para buscar y filtrar información, contrastar datos bibliográficos, resolver problemas encontrados durante la preparación y orientar el trabajo paso a paso.
 
@@ -344,3 +344,37 @@ conexiones independientes con MQTT 5.0 y se publicó el evento ficticio
 con QoS 1. Mosquitto registró la entrega y el PUBACK de ambos suscriptores.
 La [guía de la demo](demo/PRACTICA-CLAB.md#evidencia) enlaza las capturas
 obtenidas de la interfaz y el registro correspondiente a esta ejecución.
+
+### Preparación de las notas de exposición de Carlos
+
+**Integrante:** Carlos Manotoa.
+
+- Se revisaron la arquitectura y el despliegue documentados en el informe
+  de CLAB, el caso de uso CU-04 y los resultados de las pruebas funcionales.
+- Se incorporó el defecto detectado con Postman en los avisos por bloqueos
+  de eventos institucionales. El informe registra la corrección en
+  `BloqueoService` durante el mismo sprint.
+- Se explicó el alcance del análisis CAP y PACELC. El diagrama muestra un
+  servidor PostgreSQL y el informe deja abierta la respuesta ante
+  particiones y la conmutación automática. Se documentó la mensajería con
+  MQTT como una propuesta para el flujo de resolución de fallas.
+- Se preparó el [fragmento LaTeX de Carlos](notas/carlos.tex) y se comprobó
+  su compilación con pdfLaTeX, Biber y la bibliografía del equipo.
+
+### Integración en el documento grupal
+
+- Se incorporó el guion de Carlos en [notas.tex](notas.tex) y se verificó
+  la compilación del [borrador de dos páginas](notas.pdf) con pdfLaTeX,
+  Biber y referencias IEEE.
+- Se incluyeron la tabla de aportes, la declaración de uso de IA de Carlos
+  y el anexo para la fotografía del bosquejo. Se prepararon los puntos
+  de entrada para los guiones y declaraciones de los demás integrantes.
+- Se registraron los comandos de compilación y las instrucciones de
+  integración en el README.
+
+### Declaración de uso de IA de Carlos Manotoa
+
+Se utilizó Codex como apoyo para la búsqueda y el filtrado de información, para la transformación rápida de contenido entre formatos (de txt a tex o md) y como apoyo en la resolución de los problemas encontrados. No obstante, la redacción, la revisión final y la documentación fueron realizadas y revisadas por el estudiante.
+
+**Pendiente:** integrar los guiones y declaraciones restantes, incorporar
+la fotografía original del bosquejo y cronometrar el ensayo grupal.

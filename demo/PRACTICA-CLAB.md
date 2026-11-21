@@ -84,3 +84,7 @@ suscriptores conectados.
 
 - [Guía de MQTTX Desktop](https://mqttx.app/docs/get-started)
 - [Documentación de MQTTX CLI](https://mqttx.app/docs/cli)
+
+## Declaración de uso de IA de Carlos Manotoa
+
+Se utilizó Codex como apoyo para la búsqueda y el filtrado de información, para la transformación rápida de contenido entre formatos (de txt a tex o md) y como apoyo en la resolución de los problemas encontrados. No obstante, la redacción, la revisión final y la documentación fueron realizadas y revisadas por el estudiante.

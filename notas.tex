@@ -1,0 +1,91 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs,tabularx}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=ieee,sorting=none,maxnames=3]{biblatex}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\addbibresource{referencias.bib}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{1em}
+
+\begin{document}
+
+{\large Universidad Técnica Estatal de Quevedo}\par
+{\small Aplicaciones Distribuidas · ISR-701 · GA-SUM-02 / EXP-1}\par
+\vspace{.4em}
+{\LARGE\bfseries Notas de la exposición}\par
+{\large Mensajería Publish/Subscribe}\par
+
+\section{Guion por integrante}
+
+La presentación dura hasta 12 minutos. Cada integrante dispone de unos
+3 minutos, incluida su demostración si corresponde. Al final se reservan
+3 minutos para las preguntas.
+
+% Cada fragmento incluye su propio encabezado con \subsection.
+\InputIfFileExists{notas/mario.tex}{}{%
+  \subsection{Mario Zambrano · PUB/SUB aplicado al SGRA}
+  \emph{Guion pendiente de incorporación.}
+}
+
+\input{notas/carlos.tex}
+
+\InputIfFileExists{notas/nixon.tex}{}{%
+  \subsection{Nixon Piguave · JMS aplicado al RTV}
+  \emph{Guion pendiente de incorporación.}
+}
+
+\InputIfFileExists{notas/john.tex}{}{%
+  \subsection{John Silva · AMQP aplicado al SSDC}
+  \emph{Guion pendiente de incorporación.}
+}
+
+\clearpage
+
+\section{Tabla de aportes}
+
+\begin{tabularx}{\textwidth}{@{}p{.37\textwidth}X@{}}
+  \toprule
+  \textbf{Integrante} & \textbf{Aporte documentado} \\
+  \midrule
+  Zambrano Parraga Luis Mario &
+  Fundamentos de PUB/SUB, arquitectura del SGRA y práctica local de difusión. \\
+  Manotoa Alava Carlos Alexander &
+  MQTT con CLAB, diagramas TikZ, demostración con Mosquitto y MQTTX,
+  evidencias y guion. \\
+  Piguave Montaño Nixon Antonio &
+  JMS con RTV, diapositivas y práctica con Apache ActiveMQ Artemis. \\
+  Silva Triviño John Jairo &
+  Análisis del SSDC y práctica de mensajería con RabbitMQ. \\
+  \bottomrule
+\end{tabularx}
+
+\section{Declaración de uso de inteligencia artificial}
+
+\textbf{Carlos Manotoa.} Se utilizó Codex como apoyo para la búsqueda y el filtrado de información, para la transformación rápida de contenido entre formatos (de txt a tex o md) y como apoyo en la resolución de los problemas encontrados. No obstante, la redacción, la revisión final y la documentación fueron realizadas y revisadas por el estudiante.
+
+% Añadir aquí las declaraciones de los demás integrantes cuando las confirmen.
+\emph{Pendiente de incorporar las declaraciones de Mario, Nixon y John.}
+
+\printbibliography[heading=bibnumbered]
+
+\appendix
+\section{Bosquejo inicial de arquitectura}
+
+\IfFileExists{evidencias/bosquejo-inicial.jpg}{%
+  \begin{center}
+    \includegraphics[width=\linewidth,height=.45\textheight,keepaspectratio]{evidencias/bosquejo-inicial.jpg}
+  \end{center}
+}{%
+  \emph{Pendiente de incorporar la fotografía original del bosquejo a mano
+  del equipo, con los nombres y la fecha visibles.}
+}
+
+\end{document}
