@@ -378,3 +378,46 @@ Se utilizó Codex como apoyo para la búsqueda y el filtrado de información, pa
 
 **Pendiente:** integrar los guiones y declaraciones restantes, incorporar
 la fotografía original del bosquejo y cronometrar el ensayo grupal.
+
+
+---
+
+## 21 de noviembre de 2026 — Integración y pruebas PUB/SUB en el SGRA
+
+**Integrante:** Zambrano Parraga Luis Mario.  
+**Tiempo dedicado:** 3 horas y 54 minutos.
+
+### Actividades realizadas
+- Preparé el backend del SGRA en IntelliJ IDEA y verifiqué su compilación con Maven.
+- Incorporé Eclipse Paho para publicar eventos MQTT desde Java mediante Mosquitto.
+- Integré experimentalmente la publicación del evento `SolicitudTutoriaCreada` en el servicio de creación de solicitudes.
+- Realicé pruebas de publicación, recepción, caída y recuperación del broker, así como de eventos duplicados.
+- Ejecuté pruebas automatizadas con JUnit y Mockito, simulando la persistencia para no utilizar la base de datos real.
+- Organicé las capturas y la documentación de los resultados en el repositorio.
+
+### Dificultades encontradas
+- El backend no tenía implementada la publicación de eventos MQTT.
+- Inicialmente coloqué la clase de pruebas en `src/main/java`, provocando errores con las dependencias JUnit y Mockito.
+- Al detener Mosquitto, Java no pudo establecer conexión con el broker.
+
+### Soluciones aplicadas
+- Incorporé un publicador MQTT independiente y configurable.
+- Moví las pruebas a `src/test/java` y comprobé nuevamente la compilación.
+- Reinicié Mosquitto y verifiqué que podían realizarse nuevas publicaciones.
+- Utilicé Mockito para probar el flujo del servicio sin depender de PostgreSQL ni de correos reales.
+
+### Resultados obtenidos
+- Se comprobó la recepción del mismo evento por dos suscriptores independientes.
+- Se observaron las limitaciones ante desconexiones y publicaciones duplicadas.
+- **Tres pruebas unitarias y una prueba de integración servicio–broker finalizaron correctamente**, sin fallos.
+- La integración es experimental: todavía no se ha probado la persistencia real en PostgreSQL.
+
+### Evidencias
+- `evidencias/Mario Practica/practica-grande/`
+- Capturas de IntelliJ, Maven, Docker y Mosquitto.
+- Documentación del procedimiento y resultados de las pruebas.
+
+### Uso de IA
+Utilicé ChatGPT como apoyo para la implementación, solución de errores y documentación. Comprobé el funcionamiento mediante las pruebas ejecutadas en mi equipo.
+
+---
