@@ -413,11 +413,31 @@ la fotografía original del bosquejo y cronometrar el ensayo grupal.
 - La integración es experimental: todavía no se ha probado la persistencia real en PostgreSQL.
 
 ### Evidencias
-- `evidencias/Mario Practica/practica-grande/`
+- `evidencias/Mario Practica/practica-grande-SGRA/`
 - Capturas de IntelliJ, Maven, Docker y Mosquitto.
 - Documentación del procedimiento y resultados de las pruebas.
 
 ### Uso de IA
 Utilicé ChatGPT como apoyo para la implementación, solución de errores y documentación. Comprobé el funcionamiento mediante las pruebas ejecutadas en mi equipo.
+
+---
+
+## 21 de noviembre de 2026 — Integración de notas de exposición en LaTeX
+
+**Integrante:** Zambrano Parraga Luis Mario.
+
+### Actividades realizadas
+- Preparé mi apartado para las notas grupales de la exposición, abordando el patrón PUB/SUB y su aplicación experimental al SGRA.
+- Resumí la arquitectura, las pruebas realizadas y las limitaciones identificadas.
+- Actualicé `notas.tex` para incorporar mi sección y añadí mi declaración de uso de inteligencia artificial.
+
+### Dificultades y soluciones
+Fue necesario adaptar el contenido técnico de la práctica al formato de las notas grupales, evitando repetir toda la información del informe de evidencias.
+
+### Resultados
+Se preparó mi contribución para las notas grupales, manteniendo la estructura LaTeX compartida y las referencias bibliográficas correspondientes.
+
+### Uso de IA
+Utilicé ChatGPT como apoyo para organizar el apartado, revisando su coherencia con las pruebas realizadas.
 
 ---
