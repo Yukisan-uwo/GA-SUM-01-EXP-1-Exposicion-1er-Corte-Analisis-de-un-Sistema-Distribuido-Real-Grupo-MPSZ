@@ -1,0 +1,48 @@
+\subsection{Mario Zambrano · PUB/SUB aplicado al SGRA}
+
+\paragraph{Arquitectura y problema identificado.}
+El SGRA permite gestionar solicitudes de refuerzo académico
+mediante Angular, Spring Boot y PostgreSQL. Actualmente, el
+backend registra las solicitudes y gestiona notificaciones
+por correo. Como propuesta de mejora, se plantea distribuir
+eventos a componentes independientes, como notificaciones,
+auditoría e indicadores \cite{sgra_backend}.
+
+\paragraph{Fundamentos de Publish/Subscribe.}
+PUB/SUB utiliza publicadores, un intermediario de mensajería
+y suscriptores. El publicador no necesita conocer directamente
+a cada receptor. Esto facilita el desacoplamiento y permite
+procesar actividades complementarias de manera asíncrona
+\cite{lazidis2022}.
+
+\paragraph{Demostración y aplicación al SGRA.}
+Primero se demuestra PUB/SUB con Mosquitto: un publicador
+envía el evento \texttt{SolicitudTutoriaCreada} y dos
+suscriptores reciben el mismo mensaje.
+
+Posteriormente, se presenta la integración experimental
+realizada en Java. Se incorporó Eclipse Paho al backend y
+se ejecutaron pruebas de publicación, recepción, caída del
+broker, recuperación y eventos duplicados.
+
+Además, tres pruebas automatizadas con Mockito verificaron
+el comportamiento del servicio ante registros exitosos,
+fallos del registro y errores MQTT. Una prueba adicional
+comprobó la publicación desde el servicio del SGRA hacia
+Mosquitto y la recepción por dos suscriptores.
+
+\paragraph{Resultados y limitaciones.}
+Las pruebas confirmaron la distribución de eventos y
+permitieron observar que una caída del broker impide nuevas
+publicaciones mientras permanezca desconectado.
+
+También se comprobó que dos publicaciones con el mismo
+identificador lógico llegan a los suscriptores. Por ello,
+una implementación completa necesitaría controlar duplicados
+y recuperar publicaciones fallidas.
+
+La persistencia se simuló mediante Mockito: no se ejecutó
+una transacción real en PostgreSQL. Como mejora futura se
+propone evaluar Transactional Outbox y consumidores
+idempotentes para reforzar la consistencia y confiabilidad
+\cite{microsoft2026}.

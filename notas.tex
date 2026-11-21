@@ -30,10 +30,7 @@ La presentación dura hasta 12 minutos. Cada integrante dispone de unos
 3 minutos para las preguntas.
 
 % Cada fragmento incluye su propio encabezado con \subsection.
-\InputIfFileExists{notas/mario.tex}{}{%
-  \subsection{Mario Zambrano · PUB/SUB aplicado al SGRA}
-  \emph{Guion pendiente de incorporación.}
-}
+\input{notas/mario.tex}
 
 \input{notas/carlos.tex}
 
@@ -71,8 +68,11 @@ La presentación dura hasta 12 minutos. Cada integrante dispone de unos
 
 \textbf{Carlos Manotoa.} Se utilizó Codex como apoyo para la búsqueda y el filtrado de información, para la transformación rápida de contenido entre formatos (de txt a tex o md) y como apoyo en la resolución de los problemas encontrados. No obstante, la redacción, la revisión final y la documentación fueron realizadas y revisadas por el estudiante.
 
-% Añadir aquí las declaraciones de los demás integrantes cuando las confirmen.
-\emph{Pendiente de incorporar las declaraciones de Mario, Nixon y John.}
+\textbf{Mario Zambrano.} Se utilizó ChatGPT como apoyo para la preparación de la integración Java--MQTT, las pruebas automatizadas y la documentación técnica. Ejecuté las pruebas en su entorno local y contrasté los resultados con las salidas de Maven y Mosquitto.
+
+\medskip
+\emph{Pendiente de incorporar las declaraciones
+de Nixon y John.}
 
 \printbibliography[heading=bibnumbered]
 
