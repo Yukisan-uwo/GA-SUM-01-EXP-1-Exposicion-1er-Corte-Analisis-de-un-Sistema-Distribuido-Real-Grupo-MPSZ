@@ -183,3 +183,50 @@ Este apoyo no sustituye la lectura personal de las fuentes ni el dominio del con
 
 ### Tiempo dedicado
 20 minutos.
+
+---
+
+## 20 de noviembre de 2026 — Documentación de la práctica PUB/SUB
+
+**Tipo de actividad:** Documentación de evidencias y resultados de la práctica.
+
+**Integrante:** Zambrano Parraga Luis Mario.
+
+**Tema:** Demostración del patrón Publish/Subscribe mediante MQTT, aplicado a un evento simulado del SGRA.
+
+### Actividades realizadas
+
+- Revisé las capturas de la práctica PUB/SUB realizada anteriormente con Docker y Eclipse Mosquitto.
+- Organicé la documentación de la prueba para explicar su objetivo, las herramientas utilizadas y el procedimiento de publicación y suscripción.
+- Creé el archivo `README.md` dentro de la carpeta `evidencias/Mario Practica/`, donde se describe el funcionamiento de los clientes y el broker MQTT.
+- Documenté los resultados observados durante la ejecución, en la que dos suscriptores recibieron los mensajes enviados por un publicador.
+- Identifiqué las limitaciones de la práctica y aclaré que se trata de una simulación, no de una integración funcional con el backend del SGRA.
+
+### Dificultades encontradas
+
+- Las capturas evidenciaban la ejecución de la práctica, pero faltaba un documento que explicara el procedimiento y los resultados obtenidos.
+- Era necesario diferenciar la simulación local de PUB/SUB de una implementación real dentro del SGRA.
+
+### Soluciones aplicadas
+
+- Se elaboró un README específico para facilitar la comprensión y revisión de las evidencias.
+- Se documentaron el alcance y las limitaciones de la prueba, evitando atribuir al SGRA funcionalidades que todavía no están implementadas.
+
+### Resultados obtenidos
+
+- Documentación de la práctica PUB/SUB incorporada al repositorio.
+- Evidencias de ejecución acompañadas de una explicación técnica.
+- Material preparado para respaldar la demostración en clase.
+- Se identificó como siguiente etapa la integración de un publicador de eventos con el backend del SGRA.
+
+### Evidencias y archivos relacionados
+
+- `evidencias/Mario Practica/README.md`: documentación de la práctica.
+- `evidencias/Mario Practica/`: capturas originales de publicación y suscripción.
+
+### Uso de inteligencia artificial
+
+Se utilizó ChatGPT (GPT-6) como herramienta de apoyo para estructurar y redactar la documentación de la práctica. La información sobre su ejecución y resultados se contrastó con las evidencias obtenidas previamente.
+
+### Tiempo dedicado
+45 minutos.
