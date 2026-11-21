@@ -441,3 +441,24 @@ Se preparó mi contribución para las notas grupales, manteniendo la estructura 
 Utilicé ChatGPT como apoyo para organizar el apartado, revisando su coherencia con las pruebas realizadas.
 
 ---
+
+## 21 de noviembre de 2026 — Incorporación del código experimental SGRA–MQTT
+
+**Integrante:** Zambrano Parraga Luis Mario.
+
+### Actividades realizadas
+- Organicé y subí las clases Java utilizadas en la integración experimental del SGRA con MQTT.
+- Incorporé dos publicadores y las pruebas automatizadas con JUnit y Mockito.
+- Añadí `README.md` e `INTEGRACION.md` con los requisitos, las instrucciones de reproducción y las limitaciones de la práctica.
+- Revisé la estructura de archivos y corregí la referencia de mi apartado en `notas.tex`.
+
+### Dificultades y soluciones
+El código estaba dentro del backend original del SGRA. Para evitar subir todo el proyecto y sus configuraciones, separé únicamente las clases necesarias y documenté cómo utilizarlas.
+
+### Resultados
+El código y las instrucciones quedaron incorporados en `demo/sgra-mqtt/`, junto con las evidencias previamente documentadas. La reproducción requiere una copia del backend original con las modificaciones indicadas.
+
+### Uso de IA
+Utilicé ChatGPT como apoyo para organizar los archivos.
+
+---
