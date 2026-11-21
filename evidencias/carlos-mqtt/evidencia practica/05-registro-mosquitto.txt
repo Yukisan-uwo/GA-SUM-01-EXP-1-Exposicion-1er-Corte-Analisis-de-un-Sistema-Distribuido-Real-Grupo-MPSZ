@@ -1,0 +1,15 @@
+Prueba CLAB con MQTTX Desktop 1.13.3 y Mosquitto 2.0.22
+21 de noviembre de 2026 | MQTT 5.0 | 127.0.0.1:1883
+
+1795259846: Received SUBSCRIBE from sub-auditoria
+1795259846: 	clab/fallas/resuelta (QoS 1)
+1795259846: Sending SUBACK to sub-auditoria
+1795259849: Received SUBSCRIBE from sub-notificaciones
+1795259849: 	clab/fallas/resuelta (QoS 1)
+1795259849: Sending SUBACK to sub-notificaciones
+1795259974: Received PUBLISH from pub-clab (d0, q1, r0, m5747, 'clab/fallas/resuelta', ... (72 bytes))
+1795259974: Sending PUBLISH to sub-auditoria (d0, q1, r0, m1, 'clab/fallas/resuelta', ... (72 bytes))
+1795259974: Sending PUBLISH to sub-notificaciones (d0, q1, r0, m1, 'clab/fallas/resuelta', ... (72 bytes))
+1795259974: Sending PUBACK to pub-clab (m5747, rc0)
+1795259974: Received PUBACK from sub-auditoria (Mid: 1, RC:0)
+1795259974: Received PUBACK from sub-notificaciones (Mid: 1, RC:0)

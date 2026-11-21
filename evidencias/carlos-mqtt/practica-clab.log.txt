@@ -1,0 +1,58 @@
+Prueba local de CLAB — 21 de noviembre de 2026 (hora de Ecuador)
+Mosquitto 2.0.22 en 127.0.0.1:1883 | MQTTX CLI 1.13.3 | MQTT 5.0
+Broker ejecutado localmente con registro detallado de paquetes.
+Las marcas received_at de MQTTX están en UTC.
+
+=== Publicación (pub-clab) ===
+- Connecting...
+✔ Connected
+- Message publishing...
+✔ Message published
+
+=== Recepción (sub-notificaciones) ===
+- Connecting...
+✔ Connected
+- Subscribing to clab/fallas/resuelta...
+✔ Subscribed to clab/fallas/resuelta
+mqtt-packet: Packet {
+  cmd: 'publish',
+  retain: false,
+  qos: 1,
+  dup: false,
+  length: 97,
+  topic: 'clab/fallas/resuelta',
+  payload: <Buffer 7b 22 65 76 65 6e 74 6f 49 64 22 3a 22 65 76 74 2d 63 6c 61 62 2d 30 30 31 22 2c 22 74 69 70 6f 22 3a 22 52 65 70 6f 72 74 65 46 61 6c 6c 61 52 65 73 ... 22 more bytes>,
+  messageId: 1
+}, received_at: 2026-11-21T11:09:04.654Z, topic: clab/fallas/resuelta, qos: 1, size: 72B
+{"eventoId":"evt-clab-001","tipo":"ReporteFallaResuelto","reporteId":42}
+
+=== Recepción (sub-auditoria) ===
+- Connecting...
+✔ Connected
+- Subscribing to clab/fallas/resuelta...
+✔ Subscribed to clab/fallas/resuelta
+mqtt-packet: Packet {
+  cmd: 'publish',
+  retain: false,
+  qos: 1,
+  dup: false,
+  length: 97,
+  topic: 'clab/fallas/resuelta',
+  payload: <Buffer 7b 22 65 76 65 6e 74 6f 49 64 22 3a 22 65 76 74 2d 63 6c 61 62 2d 30 30 31 22 2c 22 74 69 70 6f 22 3a 22 52 65 70 6f 72 74 65 46 61 6c 6c 61 52 65 73 ... 22 more bytes>,
+  messageId: 1
+}, received_at: 2026-11-21T11:09:04.655Z, topic: clab/fallas/resuelta, qos: 1, size: 72B
+{"eventoId":"evt-clab-001","tipo":"ReporteFallaResuelto","reporteId":42}
+
+=== Registro de paquetes (broker) ===
+1795259343: Received SUBSCRIBE from sub-auditoria
+1795259343: 	clab/fallas/resuelta (QoS 1)
+1795259343: Sending SUBACK to sub-auditoria
+1795259343: Received SUBSCRIBE from sub-notificaciones
+1795259343: 	clab/fallas/resuelta (QoS 1)
+1795259343: Sending SUBACK to sub-notificaciones
+1795259344: Received PUBLISH from pub-clab (d0, q1, r0, m5250, 'clab/fallas/resuelta', ... (72 bytes))
+1795259344: Sending PUBLISH to sub-auditoria (d0, q1, r0, m1, 'clab/fallas/resuelta', ... (72 bytes))
+1795259344: Sending PUBLISH to sub-notificaciones (d0, q1, r0, m1, 'clab/fallas/resuelta', ... (72 bytes))
+1795259344: Sending PUBACK to pub-clab (m5250, rc0)
+1795259344: Received PUBACK from sub-notificaciones (Mid: 1, RC:0)
+1795259344: Received PUBACK from sub-auditoria (Mid: 1, RC:0)

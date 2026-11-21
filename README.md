@@ -36,13 +36,14 @@ y se ejecuta de manera independiente del sistema real.
 ├── demo/
 │   ├── docker-compose.yml
 │   ├── mosquitto.conf
-│   └── PRACTICA.md
+│   ├── PRACTICA.md
+│   └── PRACTICA-CLAB.md
 └── evidencias/
     ├── Mario Practica/
     └── carlos-mqtt/
-        ├── evidencia ejercicio/
-        │   ├── README.md
-        │   └── capturas de la práctica
+        ├── evidencia practica/
+        │   └── capturas de CLAB y registro de Mosquitto
+        ├── practica-clab.log.txt
         └── evidencia lectura/
             ├── fuentes en PDF
             └── imágenes con fragmentos subrayados
@@ -104,31 +105,11 @@ paquetes y componentes:
 
 ## Demostración MQTT
 
-La práctica utiliza Mosquitto como broker y MQTTX Desktop
-como cliente gráfico. Docker Engine con Docker Compose
-permite ejecutar el broker; no es obligatorio instalar
-Docker Desktop.
-
-Configuración de la prueba documentada:
-
-| Parámetro | Valor |
-|---|---|
-| Broker | `127.0.0.1:1883` |
-| Versión del protocolo | MQTT 5.0 |
-| Publicador | `pub-sgra` |
-| Suscriptores | `sub-notificaciones` y `sub-auditoria` |
-| Tópico | `sgra/tutorias/creada` |
-| QoS de publicación y suscripciones | `1` |
-| Retain de la publicación | Desactivado |
-| Persistencia del broker | Desactivada |
-
-Se publicó el evento `SolicitudTutoriaCreada`, identificado
-como `evt-001`, para la solicitud ficticia número `42`.
-Ambos suscriptores recibieron el mismo contenido.
-
-El procedimiento, las versiones utilizadas, las capturas y
-el alcance de la comprobación se describen en el
-[README de la práctica MQTT](evidencias/carlos-mqtt/evidencia%20ejercicio/README.md).
+La [demo MQTT de Carlos](demo/PRACTICA-CLAB.md) simula el evento
+`ReporteFallaResuelto` en el tópico `clab/fallas/resuelta`. Mosquitto
+distribuye el mensaje a dos clientes MQTTX con QoS 1. La integración
+con CLAB se presenta como una propuesta basada en el caso de uso
+CU-04 del informe del proyecto.
 
 ## Fuentes y alcance de la propuesta
 

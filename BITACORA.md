@@ -318,3 +318,29 @@ La práctica demuestra la distribución de un evento a dos suscripciones no dura
 Utilicé  Codex para organizar el trabajo, consultar documentación, preparar borradores de código Java, diagramas TikZ, y estructura de diapositivas en latex, y tambien para un borrador de un guion para la exposicion.
 
 Quedan pendientes la revisión y el ensayo cronometrado del guion, la integración de mi explicación en las notas LaTeX del equipo y la preparación de respuestas.
+
+---
+
+## 21 de noviembre de 2026 — Adaptación de la sección MQTT a CLAB
+
+**Sección:** Carlos Manotoa.
+
+- Se adaptaron los diagramas y las notas de MQTT al caso CU-04 de CLAB,
+  en el que un administrador marca un reporte de falla como resuelto.
+- Se preparó una práctica reproducible con el evento ficticio
+  `ReporteFallaResuelto` y el tópico `clab/fallas/resuelta`.
+- Se comprobó la publicación y la recepción del mismo JSON en dos
+  suscriptores con MQTTX CLI 1.13.3, Mosquitto 2.0.22 y QoS 1. Se usó
+  un broker local porque el servicio de Docker estaba detenido.
+- Se recompiló la presentación con pdfLaTeX y Biber.
+- Codex apoyó la revisión del informe de CLAB y la
+  adaptación de las diapositivas.
+
+**Material:** [guía de la demo](demo/PRACTICA-CLAB.md) y
+[registro de la prueba](evidencias/carlos-mqtt/practica-clab.log.txt).
+
+**Verificación adicional con MQTTX Desktop.** Se configuraron tres
+conexiones independientes con MQTT 5.0 y se publicó el evento ficticio
+con QoS 1. Mosquitto registró la entrega y el PUBACK de ambos suscriptores.
+La [guía de la demo](demo/PRACTICA-CLAB.md#evidencia) enlaza las capturas
+obtenidas de la interfaz y el registro correspondiente a esta ejecución.

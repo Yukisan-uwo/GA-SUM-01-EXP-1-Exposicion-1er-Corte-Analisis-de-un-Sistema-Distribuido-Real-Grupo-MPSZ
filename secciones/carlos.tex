@@ -150,7 +150,7 @@
   \draw[mqttflow] (3.4,5.7) -- node[above,font=\scriptsize]{PUBLISH} (6.0,5.7);
   \draw[mqttflow] (9.0,5.7) -- (10.0,5.7) |- (12.2,6.65);
   \draw[mqttflow] (10.0,5.7) |- (12.2,4.65);
-  \node[mqttdata] at (9.55,7.25) {sgra/tutorias/creada};
+  \node[mqttdata] at (9.55,7.25) {clab/fallas/resuelta};
   \draw[draw=turquesa!35] (.8,3.35) -- (15.2,3.35);
 
   % Cada diagrama muestra un único tramo emisor--receptor MQTT.
@@ -179,7 +179,7 @@ Así, el publicador no necesita conocer a cada receptor.
 
 \par
 En nuestro ejemplo, el tópico es
-\texttt{sgra/tutorias/creada}. Las barras separan los niveles
+\texttt{clab/fallas/resuelta}. Las barras separan los niveles
 de su jerarquía. Un mismo cliente puede publicar mensajes
 y también suscribirse para recibirlos.
 
@@ -202,7 +202,7 @@ tardará en llegar el mensaje.
 % ------------------------------------------------------------
 % 2. Demostración local. Datos esperados, no evidencia fabricada.
 % ------------------------------------------------------------
-\begin{frame}{Mosquitto · MQTTX}
+\begin{frame}{Demo CLAB · Mosquitto y MQTTX}
 \begin{tikzpicture}[remember picture,overlay,shift={(current page.south west)}]
   \node[mqttillustration] at (2.05,5.45) {\mqttIcon{0}{0}{2.65cm}};
   \node[mqttillustration] at (7.5,5.45) {\mqttIcon{1}{0}{2.65cm}};
@@ -211,7 +211,7 @@ tardará en llegar el mensaje.
   \node[mqttlabel] at (2.05,7.25) {MQTTX};
   \node[mqttlabel] at (7.5,7.25) {Mosquitto};
   \node[mqttdata] at (7.5,6.9) {127.0.0.1:1883};
-  \node[mqttdata] at (2.05,3.95) {pub-sgra};
+  \node[mqttdata] at (2.05,3.95) {pub-clab};
   \node[mqttlabel] at (13.2,7.25) {MQTTX};
   \node[mqttdata] at (13.2,5.15) {sub-notificaciones};
   \node[mqttdata] at (13.2,3.05) {sub-auditoria};
@@ -221,126 +221,96 @@ tardará en llegar el mensaje.
   \draw[mqttsub] (12.2,6.5) -- node[above,font=\scriptsize]{SUBSCRIBE} (9.0,6.5);
   \draw[mqttsub] (12.2,4.4) -- (10.5,4.4) -- (9.0,4.85);
   \node[mqttdata] at (7.5,3.85) {QoS 1\quad Retain 0};
-  \node[mqttdata,font=\small\ttfamily] at (7.5,2.75) {sgra/tutorias/creada};
+  \node[mqttdata,font=\small\ttfamily] at (7.5,2.75) {clab/fallas/resuelta};
   \draw[draw=turquesa!35] (.8,2.3) -- (15.2,2.3);
   \node[mqttdata,text=gris] at (2.4,1.9) {eventoId};
   \node[mqttdata,text=gris] at (7.8,1.9) {tipo};
-  \node[mqttdata,text=gris] at (13.3,1.9) {solicitudId};
-  \node[mqttlabel] at (2.4,1.4) {evt-001};
-  \node[mqttdata,font=\small\ttfamily] at (7.8,1.4) {SolicitudTutoriaCreada};
+  \node[mqttdata,text=gris] at (13.3,1.9) {reporteId};
+  \node[mqttlabel] at (2.4,1.4) {evt-clab-001};
+  \node[mqttdata,font=\small\ttfamily] at (7.8,1.4) {ReporteFallaResuelto};
   \node[mqttlabel,font=\Large\bfseries] at (13.3,1.4) {42};
 \end{tikzpicture}
 \fuentes{\cite{mqtt2019,mosquitto_pub,mosquitto_sub}; \href{https://mqttx.app/docs}{MQTTX}}
 \note{
-Para comprobar este funcionamiento utilizamos Mosquitto
-como broker y MQTTX Desktop como cliente gráfico.
-El broker se ejecutó en Docker, en
-\texttt{127.0.0.1:1883}, utilizando MQTT 5.0.
+En la práctica, MQTTX representa al backend y a los dos consumidores.
+Mosquitto recibe las conexiones MQTT 5.0 por TCP en
+\texttt{127.0.0.1:1883}. Cada conexión tiene su propio identificador.
 
 \par
-Creamos tres conexiones con identificadores distintos.
-\texttt{pub-sgra} representa al publicador;
-\texttt{sub-notificaciones} y \texttt{sub-auditoria}
-representan a los dos receptores.
+Primero suscribo \texttt{sub-notificaciones} y \texttt{sub-auditoria}
+a \texttt{clab/fallas/resuelta} con QoS 1. Luego, desde
+\texttt{pub-clab}, publico \texttt{ReporteFallaResuelto}
+con QoS 1 y Retain desactivado.
 
 \par
-Primero conectamos los suscriptores y los registramos en
-\texttt{sgra/tutorias/creada} con QoS 1.
-Después publicamos el evento
-\texttt{SolicitudTutoriaCreada}, también con QoS 1
-y con Retain desactivado.
+El JSON tiene tres campos. \texttt{eventoId} identifica el mensaje de
+negocio, \texttt{tipo} indica que la falla se resolvió y
+\texttt{reporteId} identifica el reporte ficticio 42. Muestro el
+mismo JSON en las dos recepciones. Los PUBACK del registro del broker
+confirman la recepción MQTT en cada tramo.
 
 \par
-El mensaje identifica el evento como \texttt{evt-001}
-y la solicitud como \texttt{42}. Son identificadores
-diferentes: uno corresponde al evento y otro a la
-solicitud de tutoría.
-
-\par
-En la ejecución del 15 de noviembre de 2026, ambos
-suscriptores recibieron el mismo contenido. Las capturas
-de MQTTX muestran esas recepciones y el registro de
-Mosquitto confirma los envíos PUBLISH y los PUBACK
-devueltos por los receptores.
-
-\par
-Esta práctica utiliza datos ficticios y no se conecta
-con el SGRA real. Comprobamos la distribución del evento
-durante esa ejecución; no realizamos pruebas de
-recuperación ante fallos ni medimos la latencia.
+Los clientes de prueba simulan componentes de CLAB. La demostración
+comprueba la distribución del evento con los dos suscriptores conectados.
 }
 \end{frame}
 
 % ------------------------------------------------------------
-% 3. SGRA: arquitectura de referencia y mensajería propuesta.
+% 3. CLAB: flujo documentado e integración propuesta.
 % ------------------------------------------------------------
-\begin{frame}{SGRA · Propuesta MQTT}
+\begin{frame}{CLAB · MQTT al resolver una falla}
 \begin{tikzpicture}[remember picture,overlay,shift={(current page.south west)}]
-  \node[mqttillustration] at (1.5,6.15) {\mqttIcon{2}{1}{2.1cm}};
-  \node[mqttillustration] at (5.05,6.15) {\mqttIcon{0}{0}{2.1cm}};
-  \node[mqttillustration] at (8.8,6.15) {\mqttIcon{1}{0}{2.1cm}};
-  \node[mqttillustration] at (13.25,6.15) {\mqttIcon{1}{1}{2.1cm}};
-  \node[mqttlabel] at (1.5,4.9) {Estudiante};
-  \node[mqttlabel] at (5.05,4.9) {Angular};
-  \node[mqttlabel] at (8.8,4.9) {Spring Boot};
-  \node[mqttlabel] at (13.25,4.9) {PostgreSQL};
-  \draw[mqttflow] (2.65,6.15) -- (3.9,6.15);
-  \draw[mqttflow] (6.2,6.15) -- node[above,font=\scriptsize]{REST/HTTPS} (7.65,6.15);
-  \draw[mqttflow] (9.95,6.15) -- node[above,font=\scriptsize]{SQL} (12.1,6.15);
+  \node[mqttlabel,anchor=west] at (1,7.35) {Flujo actual};
+  \node[mqttillustration] at (2.1,6.15) {\mqttIcon{0}{0}{1.9cm}};
+  \node[mqttillustration] at (7.8,6.15) {\mqttIcon{1}{0}{1.9cm}};
+  \node[mqttillustration] at (13.25,6.15) {\mqttIcon{1}{1}{1.9cm}};
+  \node[mqttlabel] at (2.1,5.03) {Angular};
+  \node[mqttlabel] at (7.8,5.03) {Spring Boot};
+  \node[mqttlabel] at (13.25,5.03) {PostgreSQL};
+  \draw[mqttflow] (3.2,6.15) -- node[above,font=\scriptsize]{REST · Marcar como resuelta} (6.7,6.15);
+  \draw[mqttflow] (8.9,6.15) -- node[above,font=\scriptsize]{Guarda estado y seguimiento} (12.15,6.15);
 
-  \node[mqttillustration] at (8.8,2.95) {\mqttIcon{1}{0}{1.95cm}};
-  \node[mqttlabel] at (8.8,1.8) {Mosquitto};
-  \node[mqttillustration] at (13.25,3.5) {\mqttIcon{2}{0}{1.4cm}};
-  \node[mqttillustration] at (13.25,1.65) {\mqttIcon{0}{1}{1.4cm}};
-  \node[mqttlabel,font=\scriptsize\bfseries] at (13.25,2.7) {Notificaciones};
-  \node[mqttlabel,font=\scriptsize\bfseries] at (13.25,.85) {Auditoría};
-  \draw[propuesta] (8.8,4.6) -- (8.8,4.0);
-  \node[mqttdata,anchor=east] at (8.35,4.3) {SolicitudTutoriaCreada};
-  \draw[propuesta] (9.9,2.95) -- (10.65,2.95) |- (12.4,3.5);
-  \draw[propuesta] (10.65,2.95) |- (12.4,1.65);
+  \node[mqttlabel,anchor=west] at (1,4.02) {Integración propuesta};
+  \draw[propuesta] (7.8,4.76) -- (7.8,3.92);
+  \node[mqttdata,anchor=west] at (8.1,4.36) {ReporteFallaResuelto};
+  \node[mqttillustration] at (7.8,3.0) {\mqttIcon{1}{0}{1.75cm}};
+  \node[mqttlabel] at (7.8,1.98) {Mosquitto};
+  \node[mqttlabel,font=\scriptsize\bfseries] (notifica) at (13.15,3.57) {Notificaciones\\[-.5mm]\normalfont Aviso al docente};
+  \node[mqttlabel,font=\scriptsize\bfseries] (audita) at (13.15,2.34) {Auditoría\\[-.5mm]\normalfont Registro de la resolución};
+  \draw[propuesta] (8.75,3.0) -- (9.75,3.0) |- (notifica.west);
+  \draw[propuesta] (9.75,3.0) |- (audita.west);
 
-  \node[mqttdata,text=turquesa,anchor=west] at (1.0,2.9) {sgra/tutorias/creada};
-  \node[mqttlabel,anchor=west] at (1.0,2.2) {QoS 1\quad +\quad eventoId};
-  \node[mqttdata,text=gris,anchor=west] at (1.0,1.5) {TLS / ACL\qquad Persistencia};
+  \node[mqttdata,text=turquesa,anchor=west] at (1,3.34) {clab/fallas/resuelta};
+  \node[mqttdata,anchor=west] at (1,2.68) {QoS 1 + eventoId};
+  \draw[draw=turquesa!35] (.8,1.65) -- (15.2,1.65);
+  \node[font=\scriptsize,text=tinta,anchor=west] at (1,1.24) {\textbf{Ventaja} \enspace Consumidores independientes};
+  \node[font=\scriptsize,text=tinta,anchor=west] at (7.4,1.24) {\textbf{Coste} \enspace Broker, reintentos y deduplicación};
 \end{tikzpicture}
-\fuentes{\cite{sgra_frontend,sgra_backend,mqtt2019,shahri2022mqtt}}
+\fuentes{\cite[secs.~3 y 6.2.8, CU-04]{clab2026}; \cite{mqtt2019}}
 \note{
-La fila superior muestra la arquitectura que el equipo
-documentó para el SGRA: Angular, Spring Boot y PostgreSQL.
-La parte inferior plantea cómo podría incorporarse MQTT.
-Las conexiones discontinuas señalan esa propuesta.
+CLAB gestiona los laboratorios informáticos de la UTEQ. Según su
+documentación, un administrador marca la falla como resuelta
+desde Angular. Spring Boot recibe la petición REST, actualiza el
+estado en PostgreSQL y registra el seguimiento. El caso de uso
+también contempla avisar al docente que reportó la falla.
 
 \par
-Después de registrar una solicitud de tutoría, el backend
-podría publicar \texttt{SolicitudTutoriaCreada}.
-Un componente recibiría el evento para preparar una
-notificación y otro para registrar la auditoría.
-Ambos reaccionarían mediante suscripciones.
+Las flechas discontinuas muestran la propuesta. Spring Boot podría
+publicar el evento en Mosquitto una vez confirmada la transacción.
+El módulo de Notificaciones podría generar el aviso y el de
+Auditoría registrar la resolución. Ambos consumirían el mismo evento
+de forma independiente. El seguimiento del reporte seguiría en la
+transacción de CLAB.
 
 \par
-Como punto de partida proponemos evaluar QoS 1 junto
-con un identificador único del evento. Ese identificador
-permitiría que cada consumidor reconozca un evento
-ya procesado y evite repetir sus efectos si recibe
-un duplicado.
-
-\par
-También debemos resolver dos situaciones: que el broker
-deje de estar disponible y que la solicitud se guarde
-en la base de datos, pero falle la publicación.
-La elección de QoS no resuelve por sí sola estos problemas.
-
-\par
-TLS, ACL y persistencia representan otras decisiones
-necesarias: cifrado del transporte, permisos por tópico
-y conservación de mensajes. Nuestra demostración local
-no implementa todas esas medidas.
-
-\par
-MQTT permitiría incorporar receptores sin añadir una
-llamada directa desde el backend a cada uno. Esa ventaja
-debe valorarse junto con el trabajo necesario para manejar
-duplicados, fallos y consistencia entre componentes.
+La ventaja es que el módulo de fallas puede comunicar la resolución
+sin llamar directamente a cada consumidor. QoS 1 admite duplicados,
+así que cada consumidor usaría \texttt{eventoId} para evitar repetir
+sus efectos. Para afrontar una caída del broker entre el guardado
+y la publicación, se podría guardar el evento pendiente en PostgreSQL
+junto con el cambio de estado y publicarlo desde un proceso con
+reintentos. En un despliegue real también habría que operar el broker
+y configurar TLS y permisos por tópico.
 }
 \end{frame}
 \endgroup
