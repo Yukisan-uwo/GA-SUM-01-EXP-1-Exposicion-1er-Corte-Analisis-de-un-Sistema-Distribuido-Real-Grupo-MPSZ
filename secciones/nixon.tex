@@ -1,28 +1,24 @@
-% Sección reservada para nixon.
-% Agregar aquí diapositivas propias con sus fuentes \cite{clave}.
-% Mantener diagramas originales y evitar afirmar que la propuesta ya está implementada.
 \begingroup
 \section{JMS / Jakarta Messaging}
 
 \begin{frame}{JMS / Jakarta Messaging: arquitectura}
+\small
 {\large\bfseries API de mensajería para Java}\par\vspace{1mm}
-{\small Un proveedor implementa la API; JMS no define un protocolo de red único.}
+{\small El proveedor implementa las interfaces y administra la entrega.}
 \begin{center}
-\resizebox{0.91\textwidth}{!}{
+\resizebox{0.90\textwidth}{!}{
 \begin{tikzpicture}[x=1cm,y=1cm]
-  \node[caja,text width=2.15cm,minimum height=1.2cm] (np) at (0,0)
-    {\textbf{Productor Java}\\\scriptsize Backend SGRA};
-  \node[evento,text width=2.65cm,minimum height=1.4cm] (nt) at (4.1,0)
-    {\textbf{Proveedor compatible}\\\scriptsize Destino: Topic};
-  \node[caja,text width=2.65cm] (nn) at (8.6,0.9)
-    {\textbf{Notificaciones}\\\scriptsize Suscripción A};
-  \node[caja,text width=2.65cm] (na) at (8.6,-0.9)
-    {\textbf{Auditoría}\\\scriptsize Suscripción B};
-  \draw[flecha] (np.east) -- node[above,font=\scriptsize]{publica} (nt.west);
-  \draw[flecha] (nt.east) -- ++(0.65,0) |- (nn.west);
-  \draw[flecha] (nt.east) -- ++(0.65,0) |- (na.west);
-  \node[font=\scriptsize\ttfamily,text=gris] at (4.1,-1.65)
-    {SolicitudTutoriaCreada};
+  \node[caja,text width=2.05cm,minimum height=1.15cm] (p) at (0,0)
+    {\textbf{Productor Java}};
+  \node[evento,text width=2.6cm,minimum height=1.3cm] (t) at (4,0)
+    {\textbf{Proveedor JMS}\\\scriptsize Destino: Topic};
+  \node[caja,text width=2.45cm] (a) at (8.2,0.85)
+    {\textbf{Auditoría}\\\scriptsize Suscripción A};
+  \node[caja,text width=2.45cm] (i) at (8.2,-0.85)
+    {\textbf{Indicadores}\\\scriptsize Suscripción B};
+  \draw[flecha] (p.east) -- node[above,font=\scriptsize]{publica} (t.west);
+  \draw[flecha] (t.east) -- ++(0.6,0) |- (a.west);
+  \draw[flecha] (t.east) -- ++(0.6,0) |- (i.west);
 \end{tikzpicture}
 }
 \end{center}
@@ -32,66 +28,73 @@
 {\small Consumidores que compiten por los mensajes.}
 \column{0.48\textwidth}
 \textbf{Topic / tópico}\par\vspace{1mm}
-{\small Cada suscripción independiente recibe el evento.}
+{\small Cada suscripción recibe el evento.}
 \end{columns}
+\vspace{2mm}
+{\scriptsize JMS define una API. El protocolo de transporte depende del proveedor y del cliente.}
 \fuentes{\cite{jakarta2022}}
 \end{frame}
 
-\begin{frame}{Ejemplo Java: un evento, dos suscripciones}
-{\small\textbf{Práctica local:} Java + Apache Artemis 2.57.0.}
+\begin{frame}{Ejemplo JMS para RTV: ejecución local}
+\small
+{\small\textbf{Evento propuesto:} \texttt{InspeccionIniciada}.}
 \vspace{2mm}
 \begin{enumerate}
-  \item \textbf{Terminal A:} notificaciones; \textbf{B:} auditoría.
-  \item Ambas se suscriben a \texttt{sgra.tutorias.creada}.
-  \item \textbf{Terminal C:} publica \texttt{SolicitudTutoriaCreada}.
+  \item Terminal A: auditoría. Terminal B: indicadores.\\Ambos suscritos a \texttt{rtv.inspecciones.iniciada}.
+  \item Terminal C: productor Java que publica un inicio ficticio.
+  \item Ambos receptores muestran el mismo cuerpo y \texttt{JMSMessageID}.
 \end{enumerate}
-\begin{block}{Datos ficticios del mensaje}
+\begin{block}{Datos del ejemplo}
 \small
-\texttt{eventoId: evt-001}\quad\texttt{solicitudId: 42}\\[1mm]
-\texttt{tipo: SolicitudTutoriaCreada}
+\texttt{eventoId: evt-rtv-001}\quad\texttt{turnoId: 42}\par
+\texttt{inspeccionId: identificador de la inspección}\par
+\texttt{tipo: InspeccionIniciada}
 \end{block}
-{\small\textbf{Resultado comprobado:} A y B recibieron el mismo evento\par
-con el mismo \texttt{JMSMessageID}.}\par\vspace{2mm}
-{\scriptsize\color{gris}Dos suscripciones no durables. Datos ficticios; sin conexión al SGRA.}
-\fuentes{\cite{jakarta2022}}
+{\small\textbf{Resultado observado:} un evento llegó a las dos suscripciones.}\par\vspace{2mm}
+{\scriptsize\color{gris}Prueba local con Apache Artemis. Suscripciones no durables, activas antes del envío.}
+\vfill\hfill{\tiny\color{gris}Fuente: \cite{jakarta2022}}\vspace{-0.11cm}
 \end{frame}
 
-\begin{frame}{SGRA: propuesta de integración con JMS}
+\begin{frame}{RTV: autorización REST y difusión propuesta con JMS}
 \begin{center}
-\resizebox{0.68\textwidth}{!}{
+\resizebox{0.85\textwidth}{!}{
 \begin{tikzpicture}[x=1cm,y=1cm]
-  \node[caja,minimum width=2.3cm] (ui) at (0,0) {\textbf{Angular}};
-  \node[caja,minimum width=2.7cm] (api) at (4,0) {\textbf{Spring Boot}};
-  \node[caja,minimum width=2.6cm] (db) at (8.3,0) {\textbf{PostgreSQL}};
-  \draw[flecha] (ui) -- node[above,font=\scriptsize]{REST/HTTPS} (api);
-  \draw[flecha] (api) -- node[above,font=\scriptsize]{SQL} (db);
-  \node[evento,minimum width=2.7cm] (broker) at (4,-1.5)
-    {\textbf{Proveedor JMS}};
-  \node[caja,text width=2.6cm] (cons) at (8.3,-1.5)
-    {\scriptsize Notificaciones\\Auditoría};
-  \draw[flecha,dashed] (api) -- (broker);
-  \draw[flecha,dashed] (broker) -- node[above,font=\scriptsize]{dos suscripciones} (cons);
+  \node[caja,text width=2.5cm] (tp) at (0,1.3)
+    {\textbf{Turnos y Pagos}};
+  \node[caja,text width=2.5cm] (ins) at (4.6,1.3)
+    {\textbf{Inspecciones}};
+  \node[caja,text width=2.5cm] (bdtp) at (0,-0.5)
+    {\scriptsize PostgreSQL\\Turnos, pagos y autorizaciones};
+  \node[caja,text width=2.5cm] (bdins) at (4.6,-0.5)
+    {\scriptsize PostgreSQL\\Inspecciones};
+  \draw[flecha] (ins.west) -- node[above,align=center,font=\scriptsize]{REST\\autorización} (tp.east);
+  \draw[flecha] (tp) -- (bdtp);
+  \draw[flecha] (ins) -- (bdins);
+  \node[evento,text width=2.4cm] (jms) at (8.8,1.3)
+    {\textbf{Proveedor JMS}\\\scriptsize Tópico propuesto};
+  \node[caja,text width=2.4cm] (sub) at (8.8,-0.5)
+    {\scriptsize Auditoría e indicadores\\Dos suscripciones};
+  \draw[flecha,dashed] (ins.east) -- node[above,font=\scriptsize]{evento} (jms.west);
+  \draw[flecha,dashed] (jms) -- (sub);
 \end{tikzpicture}
 }
 \end{center}
 \begin{columns}[T,onlytextwidth]
 \column{0.48\textwidth}
-\textbf{Integración Java}
-\begin{itemize}
-  \item \texttt{JmsTemplate}: publicación.
-  \item \texttt{@JmsListener}: recepción.
-\end{itemize}
-\textbf{Ventaja}\par\vspace{1mm}
-{\small Añadir receptores sin llamadas directas desde el productor.}
+\textbf{Aplicación propuesta}\par
+{\small Publicar después de guardar el inicio.}\par
+{\small \texttt{JmsTemplate} y \texttt{@JmsListener}.}
 \column{0.48\textwidth}
-\textbf{Decisiones pendientes}
-\begin{itemize}
-  \item Guardar solicitud y publicar evento.
-  \item Desconexiones y duplicados.
-  \item Medir latencia y capacidad.
-\end{itemize}
+\textbf{Compromisos}\par
+{\small Coordinar persistencia y publicación.}\par
+{\small Controlar duplicados y desconexiones.}
 \end{columns}
-\vspace{3mm}
+\vspace{2mm}
+{\scriptsize\color{gris}Líneas discontinuas: propuesta JMS. El broker no autoriza el inicio ni confirma pagos.}
 \fuentes{\cite{springjms,maharjan2023}}
 \end{frame}
 \endgroup
+
+
+
+

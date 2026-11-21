@@ -1,0 +1,22 @@
+Evidencias de práctica JMS RTV — 21/11/2026, America/Guayaquil.
+
+CAPTURAS: ejecución reproducida por Nixon Piguave y aportada en este chat.
+01: Terminal C, broker activo y registros de inicio.
+02: Terminal A, auditoría esperando antes del envío.
+03: Terminal B, indicadores esperando antes del envío.
+04: Terminal C, publicación de evt-rtv-001 para el turno ficticio 42.
+05: Terminal A, recepción por auditoría.
+06: Terminal B, recepción por indicadores.
+JMSMessageID de las capturas 04, 05 y 06: ID:698a6d8e-e575-11f1-b4d4-e626e217634f.
+Cuerpo idéntico en productor y ambos suscriptores; JMSRedelivered: false en ambos receptores.
+Publicación a las 01:33:07, después de iniciar ambas suscripciones.
+Las seis imágenes se copiaron sin modificaciones desde los adjuntos originales; sus hashes se cotejaron al guardarlas.
+
+REGISTROS .log: comprobación previa ejecutada por el asistente con autorización de Nixon.
+Se exportaron mediante docker logs de dos procesos Java separados.
+JMSMessageID de esos registros: ID:3de6c68e-e573-11f1-ad7c-1edf146250ce.
+Corresponden a otra ejecución; sus UUID y fechas no deben compararse con los de las capturas.
+
+La prueba demuestra difusión a dos suscripciones no durables activas.
+No acredita integración con las bases de datos o servicios reales del RTV, recuperación tras desconexión ni procesamiento de negocio persistido.
+Las capturas de lectura de artículos son evidencias separadas y continúan pendientes.

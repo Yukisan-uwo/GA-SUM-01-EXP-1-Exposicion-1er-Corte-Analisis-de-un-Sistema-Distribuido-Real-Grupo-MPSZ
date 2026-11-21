@@ -1,0 +1,11 @@
+
+PRACTICA JMS RTV | SUSCRIPTOR | indicadores
+API: jakarta.jms | Proveedor: Apache Artemis 2.57.0
+Topico: rtv.inspecciones.iniciada | Conexion: tcp://broker:61616
+Fecha Ecuador: 2026-11-21T01:17:17.361465319-05:00
+Suscripcion independiente NO DURABLE. Esperando eventos... Ctrl+C para salir.
+
+RECIBIDO por indicadores | 2026-11-21T01:17:34.797458817-05:00
+JMSMessageID: ID:3de6c68e-e573-11f1-ad7c-1edf146250ce
+JMSRedelivered: false
+Mensaje: {"eventoId":"evt-rtv-001","tipo":"InspeccionIniciada","inspeccionId":"38095c3b-3213-4c15-a0ae-2960e6a19456","turnoId":42,"autorizacionId":"8f9beea5-c826-4bfa-9b41-2dbcd86eaaee","ocurridoEn":"2026-11-21T01:17:34.752240201-05:00","version":1}
