@@ -1,0 +1,19 @@
+% Incorporar desde el documento grupal con \input{notas/john.tex}.
+% Las citas usan referencias.bib.
+
+\subsection{John Silva · AMQP aplicado al SSDC}
+
+\paragraph{Arquitectura (0:00--0:35).}
+En el SSDC, al aprobar una prepostulación, el mismo backend crea el usuario, envía las credenciales con una tarea \texttt{@Async} y registra la notificación; no hay broker. En RabbitMQ el productor publica en un \emph{exchange} y los \emph{bindings} deciden a qué colas llega el mensaje \cite{rabbitmq_concepts}. Propongo publicar \texttt{PrepostulacionAprobada} en un exchange \texttt{topic} con tres colas: correo, notificaciones y auditoría. Es una propuesta; el SSDC actual no la implementa.
+
+\paragraph{Práctica (0:35--1:40).}
+Con datos ficticios y tres consumidores esperando, publico tres eventos: la aprobación llega a las tres colas, el rechazo a correo y auditoría, y el cierre solo a auditoría. Si un consumidor está caído, el mensaje espera en su cola y se entrega al volver.
+
+\paragraph{Comparación y recomendación (1:40--2:35).}
+MQTT es ligero y pensado para dispositivos con poco ancho de banda; JMS es una API de Java; AMQP es un protocolo independiente del lenguaje \cite{oasis2012}. Un estudio pequeño con Raspberry Pi concluyó que AMQP transmitió más rápido que MQTT \cite{gultunca2018}, pero no mide el SSDC. Recomiendo AMQP con colas durables, confirmación manual y cola de fallidos; el costo es operar un componente más y aceptar consistencia eventual y duplicados \cite{maharjan2023}.
+
+\paragraph{Incidente (2:35--3:00).}
+El 2 de junio de 2019, un mantenimiento en una ubicación de Google Cloud detuvo a la vez el plano de control de red en varios clústeres, con pérdida de capacidad en seis regiones \cite{googlecloud19009}. Lección: no aplicar un cambio de configuración a todos los nodos del broker a la vez.
+
+\paragraph{Pregunta para otro equipo.}
+Si el servicio guarda el dato y el broker cae antes de publicar el evento, ¿cómo evitan que el dato quede guardado sin que nadie se entere?
