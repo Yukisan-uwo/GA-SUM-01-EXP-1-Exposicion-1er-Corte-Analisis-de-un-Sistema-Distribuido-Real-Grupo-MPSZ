@@ -28,3 +28,11 @@
 ### Evidencias
 
 - Archivos en `John Jairo Silva Triviño/`: `README.md`, `analisis-ssdc-eventos.md`, `fuentes-john.md` y `evidencias/`.
+
+- ## 20 de noviembre de 2026
+- Levanté RabbitMQ con Docker y ejecuté mi práctica: un productor publica eventos de prepostulación y tres consumidores (correo, notificaciones, auditoría) los reciben según la clave de enrutamiento.
+- Tomé 5 capturas del panel de RabbitMQ y de la terminal. Están en la carpeta evidencias.
+
+## 21 de noviembre de 2026
+- Subí mis 4 diapositivas, las fuentes de mi parte en referencias.bib y mi guion de 3 minutos para las notas.
+- Compilé el documento completo para comprobar que mi parte no rompe nada.
