@@ -1,3 +1,102 @@
-% Sección reservada para john.
-% Agregar aquí diapositivas propias con sus fuentes \cite{clave}.
-% Mantener diagramas originales y evitar afirmar que la propuesta ya está implementada.
+% Sección de John Silva: AMQP/RabbitMQ y análisis comparativo, aplicada al SSDC.
+% La propuesta es una evolución futura: el SSDC actual es un monolito y NO usa un broker.
+\begingroup
+\section{AMQP y análisis comparativo}
+
+\begin{frame}{AMQP y RabbitMQ: exchange, binding y cola}
+{\small El productor publica en un \textbf{exchange}; los \textbf{bindings} lo conectan con \textbf{colas} y los consumidores confirman (\textit{ack}).}
+\begin{center}
+\resizebox{0.9\textwidth}{!}{
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \node[caja,text width=2.5cm,minimum height=1.3cm] (pub) at (0,0)
+    {\textbf{Servicio de prepostulaciones}\\\scriptsize productor};
+  \node[evento,text width=2.5cm,minimum height=1.3cm] (ex) at (4.3,0)
+    {\textbf{Exchange topic}\\\scriptsize\texttt{ssdc.eventos}};
+  \node[caja,text width=2.5cm] (q1) at (8.8,1.6)  {\scriptsize\texttt{q.correo}};
+  \node[caja,text width=2.5cm] (q2) at (8.8,0)    {\scriptsize\texttt{q.notificaciones}};
+  \node[caja,text width=2.5cm] (q3) at (8.8,-1.6) {\scriptsize\texttt{q.auditoria}};
+  \node[caja,text width=2.3cm] (c1) at (12.6,1.6)  {\scriptsize Servicio de correo};
+  \node[caja,text width=2.3cm] (c2) at (12.6,0)    {\scriptsize Servicio de notificaciones};
+  \node[caja,text width=2.3cm] (c3) at (12.6,-1.6) {\scriptsize Servicio de auditoría};
+  \draw[flecha] (pub) -- node[above,font=\scriptsize]{publica} (ex);
+  \foreach \q in {q1,q2,q3}{\draw[flecha] (ex.east) -- ++(0.6,0) |- (\q.west);}
+  \foreach \q/\c in {q1/c1,q2/c2,q3/c3}{\draw[flecha] (\q) -- (\c);}
+  \node[font=\tiny\ttfamily,text=gris] at (6.65,2.35) {binding: prepostulacion.aprobada};
+  \node[font=\scriptsize,text=gris] at (10.7,-2.45) {consumo con \textit{ack}};
+\end{tikzpicture}}
+\end{center}
+{\small\textbf{Evento de ejemplo:} \texttt{PrepostulacionAprobada} (hoy, dentro del backend y sin broker).}\par\vspace{1mm}
+{\scriptsize\color{gris}Matiz: exchange y binding son del modelo 0-9-1; AMQP 1.0 (OASIS) no los define.}
+\fuentes{\cite{oasis2012,rabbitmq_concepts}}
+\end{frame}
+
+\begin{frame}{MQTT vs JMS vs AMQP: ¿cuál encaja en el SSDC?}
+\small
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}p{2.6cm}p{4.2cm}p{4.2cm}p{4.6cm}@{}}
+\toprule
+ & \textbf{MQTT} & \textbf{JMS} & \textbf{AMQP} \\
+\midrule
+Naturaleza & Protocolo ligero pub/sub & API Java; el proveedor define el protocolo & Protocolo de red estándar \\
+Modelo & Tópicos & Colas y tópicos & Exchanges, bindings y colas \\
+Entrega & QoS 0, 1 y 2 & Ack y mensajes persistentes & Ack, colas durables, confirmaciones \\
+Encaje en el SSDC & Pensado para dispositivos con poco ancho de banda; el SSDC no los tiene & Integra bien con Spring, pero ata el diseño a Java & Independiente del lenguaje; permite enrutar a varios servicios \\
+\bottomrule
+\end{tabular}}
+\end{center}
+\begin{block}{Tolerancia a fallos del broker}
+\small Si el broker cae, los servicios no se comunican: hace falta colas durables, \textit{ack} manual, cola de mensajes fallidos y un broker replicado.
+\end{block}
+\fuentes{\cite{derlatka2023,maharjan2023,bezerra2024,gultunca2018}}
+\end{frame}
+
+\begin{frame}{Recomendación para el SSDC y compromisos}
+\footnotesize
+\begin{columns}[T,onlytextwidth]
+\column{0.52\textwidth}
+\textbf{AMQP con RabbitMQ para eventos asíncronos}
+\begin{itemize}
+  \item Un exchange \texttt{topic} para todos los eventos.
+  \item Colas durables y \textit{ack} manual.
+  \item Cola de fallidos y reintentos acotados.
+  \item Consumidores idempotentes (\texttt{eventoId}).
+\end{itemize}
+\column{0.44\textwidth}
+\textbf{Compromisos}
+\begin{itemize}
+  \item Un componente más que operar y monitorear.
+  \item Consistencia eventual: el correo llega después de aprobar.
+  \item Entrega al menos una vez: pueden llegar duplicados.
+\end{itemize}
+\end{columns}
+\begin{block}{Antes de adoptarlo}
+\footnotesize Medir con la carga real del SSDC: los estudios comparativos no son mediciones de nuestro sistema \cite{maharjan2023}.
+\end{block}
+{\scriptsize\color{gris}Propuesta de evolución: el SSDC actual no usa broker.}
+\fuentes{\cite{rabbitmq_concepts,maharjan2023}}
+\end{frame}
+
+\begin{frame}{Incidente real: Google Cloud, 2 de junio de 2019}
+\small
+\begin{center}
+\resizebox{0.97\textwidth}{!}{
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \node[caja,text width=3.2cm] (a) at (0,0)    {\textbf{Detonante}\\\scriptsize mantenimiento en una sola ubicación};
+  \node[evento,text width=3.6cm] (b) at (4.6,0) {\textbf{Causa raíz}\\\scriptsize error de software en la automatización: detuvo clústeres de lugares distintos a la vez};
+  \node[caja,text width=3.4cm] (c) at (9.4,0)  {\textbf{Defensa que falló}\\\scriptsize modo \textit{fail static} duró solo minutos; se retiraron rutas BGP};
+  \node[caja,text width=3.0cm] (d) at (13.8,0) {\textbf{Efecto}\\\scriptsize pérdida de capacidad de red en seis regiones};
+  \draw[flecha] (a) -- (b); \draw[flecha] (b) -- (c); \draw[flecha] (c) -- (d);
+\end{tikzpicture}}
+\end{center}
+\begin{itemize}
+  \item Duración: entre 3 h 19 min y 4 h 25 min según la región.
+  \item Herramientas de depuración compitieron con la red congestionada.
+\end{itemize}
+\begin{block}{Qué aprendemos para el SSDC con broker}
+\footnotesize Un cambio de configuración o de mantenimiento no debe aplicarse a todos los nodos del broker a la vez: se prueba primero en uno y se puede volver atrás.
+\end{block}
+\fuentes{\cite{googlecloud19009}}
+\end{frame}
+\endgroup
