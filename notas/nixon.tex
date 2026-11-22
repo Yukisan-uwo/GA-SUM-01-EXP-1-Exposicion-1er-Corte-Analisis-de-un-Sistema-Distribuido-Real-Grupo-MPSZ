@@ -1,0 +1,24 @@
+\subsection{Nixon Piguave · JMS aplicado al RTV}
+\noindent\textbf{Expositor:} Piguave Montaño Nixon Antonio. \textbf{Duración prevista:} 3 minutos, incluida la demostración.
+
+\paragraph{Arquitectura JMS: 0:00--0:45.}
+JMS, actualmente Jakarta Messaging, es una API de mensajería para Java. En nuestra práctica utilizamos Apache Artemis como proveedor: implementa las interfaces y administra la entrega.
+
+El diagrama muestra un productor, un tópico y dos suscripciones independientes: auditoría e indicadores. En una cola, los consumidores compiten por los mensajes; en un tópico, cada suscripción puede recibir el evento. Por eso elegimos un tópico para que ambas funciones conozcan el inicio de una inspección. JMS define la API, no un protocolo de red único.\cite{jakarta2022}
+
+\paragraph{Práctica: 0:45--2:00.}
+La demostración utiliza datos ficticios y se ejecuta separada del RTV. La terminal A representa auditoría y la B, indicadores. Ambas están esperando en el tópico \texttt{rtv.inspecciones.iniciada}. Desde C publicaré \texttt{InspeccionIniciada} para el turno ficticio 42.
+
+\noindent\textit{Acción: mostrar A y B, ejecutar en C y enseñar las dos recepciones. Reservar unos 20 segundos para cambiar de ventanas y esperar la salida.}
+\begin{quote}\small\ttfamily
+docker compose run --rm cliente publicar 42 evt-rtv-001
+\end{quote}
+
+El productor y ambos receptores muestran el mismo cuerpo y \texttt{JMSMessageID}. La ejecución demuestra difusión a dos suscripciones activas, no una inspección guardada en el sistema real. Las suscripciones son no durables: si cerramos sus consumidores, no conservarán los mensajes publicados durante su ausencia.
+
+\paragraph{Aplicación propuesta: 2:00--3:00.}
+En el RTV, Inspecciones pide autorización a Turnos y Pagos mediante REST antes de registrar el inicio. Proponemos publicar el evento después de guardarlo. Auditoría e indicadores podrían reaccionar sin llamadas directas desde Inspecciones a cada receptor.
+
+Las líneas discontinuas representan esa propuesta. Debemos resolver qué ocurre si se guarda la inspección y falla la publicación, y cómo evitar efectos repetidos ante duplicados. En una futura integración con Spring podríamos usar \texttt{JmsTemplate} para publicar y \texttt{@JmsListener} para recibir.\cite{springjms}
+
+Artemis sirvió para demostrar el mecanismo. Para elegir un proveedor en el proyecto, faltaría medir latencia y capacidad con nuestra carga; los resultados de otros estudios no son mediciones del RTV.\cite{maharjan2023} La autorización seguirá correspondiendo a Turnos y Pagos.

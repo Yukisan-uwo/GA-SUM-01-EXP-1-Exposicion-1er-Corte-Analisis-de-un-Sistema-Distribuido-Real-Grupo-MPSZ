@@ -1,8 +1,8 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 \usepackage[T1]{fontenc}
 \usepackage[spanish,es-noshorthands]{babel}
 \usepackage{lmodern}
-\usepackage[margin=2.4cm]{geometry}
+\usepackage[margin=2cm]{geometry}
 \usepackage{graphicx}
 \usepackage{booktabs,tabularx}
 \usepackage{csquotes}
@@ -12,7 +12,7 @@
 \addbibresource{referencias.bib}
 
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{3pt}
+\setlength{\parskip}{2pt}
 \setlength{\emergencystretch}{1em}
 
 \begin{document}
@@ -34,17 +34,11 @@ La presentación dura hasta 12 minutos. Cada integrante dispone de unos
 
 \input{notas/carlos.tex}
 
-\InputIfFileExists{notas/nixon.tex}{}{%
-  \subsection{Nixon Piguave · JMS aplicado al RTV}
-  \emph{Guion pendiente de incorporación.}
-}
+\input{notas/nixon.tex}
 
-\InputIfFileExists{notas/john.tex}{}{%
-  \subsection{John Silva · AMQP aplicado al SSDC}
-  \emph{Guion pendiente de incorporación.}
-}
+\input{notas/john.tex}
 
-\clearpage
+
 
 \section{Tabla de aportes}
 
@@ -73,22 +67,22 @@ La presentación dura hasta 12 minutos. Cada integrante dispone de unos
 \textbf{John Silva.} Usé Claude (Anthropic) como apoyo para analizar el código del SSDC, preparar borradores de las diapositivas, del guion, revisar que el documento compilara. Ejecuté la práctica en mi equipo y tomé las capturas, abrí y verifiqué las fuentes citadas, y revisé y ajusté el contenido antes de entregarlo.
 
 
-\medskip
-\emph{Pendiente de incorporar las declaraciones
-de Nixon y John.}
+\textbf{Nixon Piguave.} Se utilizó Codex como apoyo para organizar el aporte de JMS, consultar fuentes, documentar en latex y preparar borradores de código, configuración Docker, diagramas TikZ. Ejecuté manualmente la práctica y las capturas, y las bitacoras fueron hechos por mi mismo. 
 
+\begingroup\footnotesize
 \printbibliography[heading=bibnumbered]
+\endgroup
 
 \appendix
 \section{Bosquejo inicial de arquitectura}
 
-\IfFileExists{evidencias/Boceto inicial a papel.jpg}{
+\IfFileExists{evidencias/Boceto_inicial_a_papel.jpg}{
     \begin{center}
         \includegraphics[
             width=\linewidth,
-            height=.45\textheight,
+            height=.30\textheight,
             keepaspectratio
-        ]{evidencias/Boceto inicial a papel.jpg}
+        ]{evidencias/Boceto_inicial_a_papel.jpg}
     \end{center}
 }{
     \emph{Pendiente de incorporar el bosquejo.}
