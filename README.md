@@ -143,4 +143,3 @@ Las fuentes académicas y técnicas utilizadas se consignan en [`referencias.bib
 
 **Enlace:** https://youtu.be/N8fyBjX9-Ms
 
-Enlace proporcionado por el equipo para documentar su ensayo de exposición. Verificar antes de la entrega que pueda abrirse sin restricciones de acceso.
